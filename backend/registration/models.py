@@ -134,6 +134,7 @@ class UserInformation(models.Model):
 class Student(models.Model):
     registration_number = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
+    name=models.CharField(max_length=100,default="")
     department = models.CharField(max_length=100, default='')
     semester = models.CharField(max_length=20)
     room_number = models.CharField(max_length=10)
@@ -190,6 +191,7 @@ class Admission(models.Model):
                 registration_number=application.registration_number,
                 defaults={
                     'email': application.email,
+                    'name':application.name,
                     'department': application.department_name,
                     'semester': application.semester,
                     'room_number': self.room_number.room_number,

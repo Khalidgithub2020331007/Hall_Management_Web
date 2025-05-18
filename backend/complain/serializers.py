@@ -1,7 +1,24 @@
 from rest_framework import serializers
-from .models import Complain
+from .models import Complain, SystemGoal
 
 class ComplainSerializer(serializers.ModelSerializer):
+    # Dynamically add complainant_name from related Student
+    complainant_name = serializers.CharField(source='complainant_registration_number.name', read_only=True)
+
     class Meta:
         model = Complain
-        fields = ['complainant_registration_number', 'complain_tag', 'complain_details']
+        fields = [
+            'complain_id',
+            'complainant_registration_number',  # input field
+            'complainant_name',                 # read-only display field
+            'complain_date',
+            'complain_tag',
+            'complain_details',
+            'complain_status',
+        ]
+
+
+class SystemGoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SystemGoal
+        fields = '__all__'
