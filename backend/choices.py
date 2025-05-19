@@ -13,9 +13,6 @@ USER_ROLE = [
     ('student', 'Student'),
     ('provost_body', 'Provost Body'),
     ('official_person', 'Official Person'),
-    ('dining', 'Dining'),
-    ('canteen', 'Canteen'),
-    ('shop', 'Shop'),
 ]
 
 PROVOST_BODY_ROLE = [

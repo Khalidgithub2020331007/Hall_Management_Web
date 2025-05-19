@@ -227,7 +227,7 @@ class OfficialPerson(models.Model):
     official_role = models.CharField(max_length=100,choices=OFFICE_PERSON_ROLE,default='Electrician')
 
     def __str__(self):
-        return self.name
+        return self.email
 
 
 
