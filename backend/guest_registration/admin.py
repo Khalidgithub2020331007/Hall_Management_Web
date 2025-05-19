@@ -12,6 +12,7 @@ class GuestRegistrationAdmin(admin.ModelAdmin):
         'reference_email',
         'reference_name',
         'reference_role',
+        'hall',
         'guard_email',
         'guard_name',
         'entry_date_time',
@@ -23,6 +24,8 @@ class GuestRegistrationAdmin(admin.ModelAdmin):
         'reference_email__name',
         'guard_email__email',
         'guard_email__name',
+        'reference_email__hall__hall_name'
+
     ]
 
     def reference_name(self, obj):
@@ -36,3 +39,7 @@ class GuestRegistrationAdmin(admin.ModelAdmin):
     def guard_name(self, obj):
         return obj.guard_email.name
     guard_name.short_description = 'Guard Name'
+    def hall(self, obj):
+        return obj.reference_email.hall
+    hall.short_description = 'Hall'
+

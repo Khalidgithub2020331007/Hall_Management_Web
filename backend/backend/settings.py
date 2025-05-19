@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'registration',
     'corsheaders',
     'complain',
+    'sport_equipment',
     'guest_registration',
     'rest_framework'
 ]

@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
-from registration.models import UserInformation,OfficialPerson
-
+from registration.models import UserInformation,OfficialPerson,Hall
 # =======================
 # Guest GuestRegistration
 # =======================
@@ -22,6 +21,7 @@ class GuestRegistration(models.Model):
         related_name='guests_registered'
     )
 
+
     entry_date_time = models.DateTimeField()
     exit_date_time = models.DateTimeField(blank=True, null=True)
 
@@ -38,3 +38,4 @@ class GuestRegistration(models.Model):
 
     class Meta:
         ordering = ['-entry_date_time']
+    

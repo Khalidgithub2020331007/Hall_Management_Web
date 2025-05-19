@@ -78,13 +78,18 @@ Save and exit nano:
 ✅ Complain
 ✅ Complain Tag
 ✅ System Goal
-✅
+✅ Guest Registration
+✅ Sports element
+✅ 
+✅ 
+✅ 
+✅ 
+✅ 
+✅ 
 ❌ Forum
 ❌ Meeting
 ❌ Notice Board
 ❌ Lost and Found
-❌ Guest Registration
-❌ Sports element
 ❌ Feed Back 
 ❌ Food/Item
 ❌ Dinning/Canteen /Shop

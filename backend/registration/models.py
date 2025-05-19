@@ -105,7 +105,8 @@ class Application(models.Model):
     profile_picture = models.ImageField(upload_to='student_profile_pictures/', null=True, blank=True)
 
     def __str__(self):
-        return self.registration_number
+        return f"{self.registration_number} - {self.name}"
+
 
 
 # =====================
@@ -119,7 +120,7 @@ class UserInformation(models.Model):
     phone_number = models.CharField(max_length=15)
     password = models.CharField(max_length=100)
     user_role = models.CharField(max_length=100, choices=USER_ROLE, default='provost_body')
-    blood_group = models.CharField(max_length=5)
+    blood_group = models.CharField(max_length=10)
     hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
@@ -220,7 +221,9 @@ class ProvostBody(models.Model):
     def __str__(self):
         return self.name
 
-
+# =====================
+# Official Person Model
+# =====================
 class OfficialPerson(models.Model):
     email = models.EmailField(unique=True)
     name=models.CharField(max_length=100,default='')
@@ -238,9 +241,8 @@ class AddOffice(models.Model):
     phone_number = models.CharField(max_length=15)
     password = models.CharField(max_length=100)
     blood_group = models.CharField(max_length=10)
-    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
-
-    user_role = models.CharField(max_length=100, choices=USER_ROLE, default='provost_body')
+    hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
+    user_role = models.CharField(max_length=100, choices=USER_ROLE)
 
     provost_body_role = models.CharField(max_length=100,choices=PROVOST_BODY_ROLE,blank=True, null=True,help_text='Only for Provost Body')
 

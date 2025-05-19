@@ -120,8 +120,8 @@ class ProvostBodyAdmin(admin.ModelAdmin):
 # =============================
 @admin.register(OfficialPerson)
 class OfficialPersonAdmin(admin.ModelAdmin):
-    list_display = ('email','name', 'official_role')
-    search_fields = ('email','name', 'official_role')
+    list_display = ('email', 'name', 'official_role')
+    search_fields = ('email', 'name', 'official_role')
     list_filter = ('official_role',)
 
 
