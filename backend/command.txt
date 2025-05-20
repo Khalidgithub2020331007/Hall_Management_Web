@@ -34,7 +34,7 @@ python3 manage.py migrate
 
 git checkout develop_khalid    
 git add .
-git commit -m "Create choices.py and add Complain_tag in choices.py"
+git commit -m ""
 git push origin develop_khalid
 
 Check your current branch:
@@ -60,6 +60,13 @@ git checkout main
 git pull origin main
 git merge develop_khalid
 git push origin main
+
+
+# Completely erase the last commit (use with caution)
+
+git reset --hard e4e877e8a842af588af1b40c4fd1a743f3
+git push --force origin main
+
 
 Save and exit nano:
 

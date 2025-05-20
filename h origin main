@@ -1,0 +1,170 @@
+[33mcommit 522ea1d900e74481c66e502d8c73c3a23728dc3d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Tue May 20 07:10:15 2025 +0600
+
+    Create choices.py and add Complain_tag in choices.py
+
+[33mcommit e4e877e8a842af588af1b40c4fd1a743f34ef3de[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Mon May 19 22:45:05 2025 +0600
+
+    After meetings remove
+
+[33mcommit 2ad7607b6c6cd2d21c4ef744d31f3f6d2996ecea[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 5e1b5e49 eaefbddf
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Mon May 19 17:12:27 2025 +0600
+
+    Merge branch 'Create Sports Equipment and updated , every thing is correct, search field working'
+
+[33mcommit eaefbddfb40fb2e4841ff8c548dde65761744a27[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Mon May 19 17:11:27 2025 +0600
+
+    Create choices.py and add Complain_tag in choices.py
+
+[33mcommit 5e1b5e491814155e159044cb754ac12dccfbff11[m
+Merge: d6793b1f 8009d154
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Mon May 19 14:48:15 2025 +0600
+
+    Merge branch 'develop_khalid with create guest_registration'
+
+[33mcommit 8009d15472f0057f38c2061f8685c5847e0cb42a[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Mon May 19 13:29:30 2025 +0600
+
+    Create Guest Registration and it works properly
+
+[33mcommit a5a39e4fc5ea71fddc44be0202673a8e8a5ead41[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Mon May 19 13:26:37 2025 +0600
+
+    Create Guest Registration and it works properly
+
+[33mcommit 6e632b17d1eed17bfd56bc008b0ef969c961ec0f[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Sun May 18 21:20:08 2025 +0600
+
+    Create choices.py and add Complain_tag in choices.py
+
+[33mcommit d6793b1f9bc753ae0cd50fa5f28ae9901ba60ca4[m
+Merge: c55d6096 9e611bd8
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Sun May 18 20:31:39 2025 +0600
+
+    Merge branch 'develop_khalid' and remove system goal error
+
+[33mcommit 9e611bd8718250418c25e307d95d282e48ec6a6c[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Sun May 18 20:21:23 2025 +0600
+
+    Create choices.py and add Complain_tag in choices.py
+
+[33mcommit c55d6096f15f3cd91debca786b0d656b8b767e8d[m
+Merge: db6c5d57 0ecd2736
+Author: Sheikh Khalid Azad <107164227+Khalidgithub2020331007@users.noreply.github.com>
+Date:   Sat May 17 11:47:57 2025 +0600
+
+    Merge pull request #2 from Khalidgithub2020331007/develop_khalid
+    
+    add registrtion,complain and choice.py
+
+[33mcommit 0ecd2736588237d2c904bea0bf870ed257a0a3a0[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Sat May 17 11:37:05 2025 +0600
+
+    Save current work before merging into main
+
+[33mcommit 20af09b68c87169318d8513f986a6a1789a1f599[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Sat May 17 10:24:50 2025 +0600
+
+    Add Complete Complain and System Goal
+
+[33mcommit e29303864dc54a35244ab42fb5b065df820c27a7[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Sat May 17 08:51:31 2025 +0600
+
+    Create choices.py and add Complain_tag in choices.py
+
+[33mcommit 800791772f04699fc65935951720246034037645[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Sat May 17 07:25:54 2025 +0600
+
+    Create choices.py and add Complain_tag in choices.py
+
+[33mcommit 890b8746b3298e36884952e7d076f6f0b9c784bb[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Fri May 16 22:41:30 2025 +0600
+
+    Update Registration part with Hall, Room,Student,Provost Body, Official Person,Application,Admission,
+
+[33mcommit f02f8a0437e40703abd164aa2a8e72cb98ce8e51[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Fri May 16 22:40:34 2025 +0600
+
+    Update Registration part with Hall, Room,Student,Provost Body, Official Person,Application,Admission,
+
+[33mcommit ee08751eb931cab4961268f99a1ae1ec12f99658[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Sun May 11 21:38:02 2025 +0600
+
+    Initial commit on develop_khalid branch
+
+[33mcommit 1df355f1818d9f56ec47e98344b113452d22c0af[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Sat May 10 00:00:30 2025 +0600
+
+    uplaod admission
+
+[33mcommit b5b064b1d8287fe5a44411ee5905bb598f21305f[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Fri May 9 23:56:40 2025 +0600
+
+    Update Hall and create room and application
+
+[33mcommit db6c5d572199575994e0945d1a48adade01f3947[m
+Merge: 217386c7 d2e608f3
+Author: Fuad-36 <107233557+Fuad-36@users.noreply.github.com>
+Date:   Fri May 9 21:41:55 2025 +0600
+
+    Merge pull request #1 from Khalidgithub2020331007/develop
+    
+     react app with vite installed and setup tailwind and daisyui
+
+[33mcommit d2e608f3021683aaf160aa41d6eec8c63d5a6342[m
+Author: Fuad-36 <alaminfuad06@gmail.com>
+Date:   Fri May 9 20:51:59 2025 +0600
+
+     created react app again with vite installed and setup tailwind and daisyui
+
+[33mcommit d627ffc0a0797669f9cf912d3314c6117972042f[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Thu May 8 19:47:14 2025 +0600
+
+    Add Hall Model
+
+[33mcommit 217386c7ef3c3769ef1e707b5071a9f877eba7ad[m
+Author: Fuad-36 <alaminfuad06@gmail.com>
+Date:   Thu May 8 18:31:58 2025 +0600
+
+    installed tailwind postcss daisyui autoprefixer react-redux react-router-dom axios
+
+[33mcommit 6eaea7ee464a3cdf0117f225e821762f20d0e6bf[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Thu May 8 14:14:12 2025 +0600
+
+    Upload
+
+[33mcommit f4312b850e717fbdc1ddb11d8e556381b3080432[m
+Author: Khalidgithub2020331007 <sheikhkhalidazad@gmail.com>
+Date:   Thu May 8 13:56:19 2025 +0600
+
+    Created backend
+
+[33mcommit c0e0d41e52c4bd6e1ebd9be5621d6c431e8f1e0e[m
+Author: Fuad-36 <alaminfuad06@gmail.com>
+Date:   Thu May 8 12:43:49 2025 +0600
+
+    installed tailwind daisyui postcss autoPrefixer react router-dom redux axios and configured tailwind and daisy
