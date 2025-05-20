@@ -1,44 +1,19 @@
 @import "tailwindcss";
 @plugin "daisyui";
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+@theme {
+  --font-display: "Satoshi", "sans-serif";
+  --breakpoint-3xl: 120rem;
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+  /* Blue Colors (approximate) */
+  --color-primary-100: oklch(0.99 0 0); /* Very light/white */
+  --color-primary-200: oklch(0.98 0.04 270); /* Very pale primary */
+  --color-primary-300: oklch(0.94 0.11 270); /* Light primary */
+  --color-primary-400: oklch(0.92 0.19 270); /* Softer medium primary */
+  --color-primary-500: oklch(0.84 0.18 270); /* Mid-range primary */
+  --color-primary-600: oklch(0.53 0.12 270); /* Deep blue */
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
+  --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+  /* ... */
 }
