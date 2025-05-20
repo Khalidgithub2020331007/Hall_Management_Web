@@ -20,41 +20,48 @@ python3 manage.py runserver
 
 
 # Delete all migration files (except __init__.py) inside admission/migrations/
+
 find admission/migrations -name "*.py" -not -name "__init__.py" -delete
+
 find admission/migrations -name "*.pyc" -delete
 
 # Drop the database or the specific table if needed (SQLite case):
+
 rm db.sqlite3
 
 # Recreate migration and migrate again
+
 python3 manage.py makemigrations
 python3 manage.py migrate
 
-
+## Push in local repository
 
 git checkout develop_khalid    
 git add .
 git commit -m ""
 git push origin develop_khalid
 
-Check your current branch:
+## Check your current branch:
 git branch
 
-Switch to develop_khalid:
+## Switch to develop_khalid:
 git checkout develop_khalid
 
-Add your changes:
+## Add your changes:
 git add .
 
-or specify particular files:
+## or specify particular files:
 git add filename.py
 
 
-Commit your changes:
+## Commit your changes:
 git commit -m "Your descriptive commit message"
 
-Push to the remote branch:
+## Push to the remote branch:
 git push origin develop_khalid
+
+
+## Merge with main
 
 git checkout main
 git pull origin main
