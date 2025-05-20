@@ -13,4 +13,8 @@ class CreateMeetingViewSet(viewsets.ModelViewSet):
 class AddTopicViewSet(viewsets.ModelViewSet):
     queryset = AddTopic.objects.all()
     serializer_class = AddTopicSerializer
+<<<<<<< HEAD
     permission_classes = [IsAuthenticatedOrReadOnly]
+=======
+    permission_classes = [IsAuthenticatedOrReadOnly]
+>>>>>>> develop_khalid

@@ -1,4 +1,9 @@
 
+<<<<<<< HEAD
+=======
+# Register your models here.
+
+>>>>>>> develop_khalid
 from django.contrib import admin
 from .models import CreateMeeting, AddTopic
 

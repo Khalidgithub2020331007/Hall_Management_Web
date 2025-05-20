@@ -16,9 +16,14 @@ python3 manage.py migrate
 python3 manage.py createsuperuser
 python3 manage.py runserver
 
+## For env and run
+
 source django_env/bin/activate
 python3 manage.py runserver
 
+## For specific Migration
+
+python3 manage.py makemigrations lost_and_found
 
 python manage.py migrate registration zero
 python manage.py migrate registration
@@ -33,7 +38,12 @@ python manage.py migrate
 
 
 
+<<<<<<< HEAD
 # Delete all migration files (except __init__.py) inside admission/migrations/
+=======
+
+## Delete all migration files (except __init__.py) inside admission/migrations/
+>>>>>>> develop_khalid
 
 find admission/migrations -name "*.py" -not -name "__init__.py" -delete
 
@@ -110,14 +120,21 @@ Save and exit nano:
 ✅ Sports element
 ✅ Meeting
 ✅ Notice Board
+<<<<<<< HEAD
 ✅ 
+=======
+✅ Lost and Found
+>>>>>>> develop_khalid
 ✅ 
 ✅ 
 ✅ 
 ❌ Forum
+<<<<<<< HEAD
 ❌ 
 ❌ 
 ❌ Lost and Found
+=======
+>>>>>>> develop_khalid
 ❌ Feed Back 
 ❌ Food/Item
 ❌ Dinning/Canteen /Shop

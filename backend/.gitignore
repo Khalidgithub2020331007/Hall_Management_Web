@@ -1,0 +1,18 @@
+# Python bytecode
+__pycache__/
+*.pyc
+
+# SQLite database
+db.sqlite3
+
+# Virtual environment
+env/
+venv/
+django_env/
+
+# IDE/editor settings
+.vscode/
+.idea/
+
+# Django migrations cache
+*/migrations/__pycache__/

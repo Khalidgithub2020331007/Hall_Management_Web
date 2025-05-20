@@ -3,12 +3,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 # =====================
 # Role 
 # =====================
-# =========================
-# Role Choices
-# =========================
-# =========================
-# Role Choices
-# =========================
+
 USER_ROLE = [
     ('student', 'Student'),
     ('provost_body', 'Provost Body'),
