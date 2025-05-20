@@ -1,8 +1,4 @@
 from django.contrib import admin
-<<<<<<< HEAD
-
-# Register your models here.
-=======
 from .models import LostAndFound
 
 @admin.register(LostAndFound)
@@ -33,4 +29,3 @@ class LostAndFoundAdmin(admin.ModelAdmin):
     def hall(self, obj):
         return obj.user_email.hall
     hall.short_description = 'Hall'
->>>>>>> develop_khalid

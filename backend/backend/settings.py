@@ -29,13 +29,13 @@ INSTALLED_APPS = [
     'registration',
     'corsheaders',
     'complain',
-    'notice_board',
-<<<<<<< HEAD
-=======
-    'lost_and_found',
->>>>>>> develop_khalid
-    'sport_equipment',
     'meetings',
+    'events',
+    'official_transaction',
+    'notice_board',
+    'lost_and_found',
+    'forum',
+    'sport_equipment',
     'guest_registration',
     'rest_framework'
 ]

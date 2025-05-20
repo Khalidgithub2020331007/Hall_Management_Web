@@ -8,10 +8,11 @@ urlpatterns = [
     path('complain/', include('complain.urls')),
     path('guest_registration/', include('guest_registration.urls')),
     path('notice_board/', include('notice_board.urls')),
-<<<<<<< HEAD
-=======
     path('lost_and_found/', include('lost_and_found.urls')),
->>>>>>> develop_khalid
+    path('meetings/', include('meetings.urls')),
+    path('events/', include('events.urls')),
+    path('official_transaction/', include('official_transaction.urls')),
+    path('forum/', include('forum.urls')),
 ]
 
 if settings.DEBUG:  # Now you can use settings.DEBUG
