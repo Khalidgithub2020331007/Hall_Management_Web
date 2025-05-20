@@ -1,10 +1,13 @@
 
-
+ // For migration and run
 
 source django_env/bin/activate
 python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py runserver
+
+
+// For delete database, migration and run
 
 source django_env/bin/activate
 rm db.sqlite3
@@ -30,9 +33,71 @@ rm db.sqlite3
 python3 manage.py makemigrations
 python3 manage.py migrate
 
-
+// For Push in develop_branch
 
 git checkout develop_khalid    
 git add .
-git commit -m "Added hall name in meetings"
+git commit -m "Create choices.py and add Complain_tag in choices.py"
 git push origin develop_khalid
+
+Check your current branch:
+git branch
+
+Switch to develop_khalid:
+git checkout develop_khalid
+
+Add your changes:
+git add .
+
+or specify particular files:
+git add filename.py
+
+
+Commit your changes:
+git commit -m "Your descriptive commit message"
+
+Push to the remote branch:
+git push origin develop_khalid
+
+
+// for merge with main
+
+git checkout main
+git pull origin main
+git merge develop_khalid
+git push origin main
+
+Save and exit nano:
+
+    Press Ctrl + O → then press Enter to save.
+
+    Press Ctrl + X to exit.
+
+
+✅ Room
+✅ Hall
+✅ Provost Body
+✅ User Information
+✅ Admission
+✅ Office/Worker/Guard
+✅ Student
+✅ Complain
+✅ Complain Tag
+✅ System Goal
+✅ Guest Registration
+✅ Sports element
+✅ 
+✅ 
+✅ 
+✅ 
+✅ 
+✅ 
+❌ Forum
+❌ Meeting
+❌ Notice Board
+❌ Lost and Found
+❌ Feed Back 
+❌ Food/Item
+❌ Dinning/Canteen /Shop
+❌ Event
+❌ Official/Transaction
