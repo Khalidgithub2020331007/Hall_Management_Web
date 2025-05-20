@@ -25,18 +25,18 @@ class SportsEquipmentAdmin(admin.ModelAdmin):
         'guard_email__name',
         'equipment_name_and_number',
         'guard_email__hall__hall_name',
+        'hall'
 
     ]
 
-    def reference_name(self,obj):
+    def hall(self, obj):
+        return obj.guard_email.hall
+    hall.short_description = 'Hall'
+
+    def reference_name(self, obj):
         return obj.reference_registration_number.name
     reference_name.short_description = 'Reference Name'
 
     def guard_name(self, obj):
         return obj.guard_email.name
     guard_name.short_description = 'Guard Name'
-
-    def hall(self, obj):
-        return obj.guard_email.hall.hall_name
-    hall.short_description = 'Hall Name'
-

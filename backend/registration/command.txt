@@ -34,5 +34,5 @@ python3 manage.py migrate
 
 git checkout develop_khalid    
 git add .
-git commit -m "Create Guest Registration and it works properly"
+git commit -m "Added hall name in meetings"
 git push origin develop_khalid

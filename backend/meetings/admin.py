@@ -11,10 +11,14 @@ class CreateMeetingAdmin(admin.ModelAdmin):
         'meeting_chairperson',
         'meeting_description',
         'next_meeting_date_time',
+        'hall'
     )
     list_filter = ('meeting_chairperson',)
     search_fields = ('meeting_description', 'meeting_decision')
     ordering = ('meeting_date_time',)  # Optional
+    def hall(self, obj):
+        return obj.meeting_chairperson.hall
+    hall.short_description = 'Hall'
 
 
 

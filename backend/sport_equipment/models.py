@@ -10,7 +10,7 @@ class SportsEquipment(models.Model):
     serial_number = models.AutoField(primary_key=True)
 
     guard_email = models.ForeignKey(
-        UserInformation,
+        OfficialPerson,
         on_delete=models.CASCADE, 
         related_name='equipment_registered'
     )

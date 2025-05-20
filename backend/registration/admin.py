@@ -97,10 +97,10 @@ class AdmissionAdmin(admin.ModelAdmin):
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = (
-        'registration_number', 'email', 'department',
-        'semester', 'session', 'room_number'
+        'registration_number', 'email','name', 'department',
+        'semester', 'session', 'room_number','hall'
     )
-    search_fields = ('registration_number', 'email', 'department', 'semester', 'room_number')
+    search_fields = ('registration_number', 'email', 'department', 'semester', 'room_number','hall')
     list_filter = ('department', 'semester')
 
 
@@ -110,8 +110,8 @@ class StudentAdmin(admin.ModelAdmin):
 # =============================
 @admin.register(ProvostBody)
 class ProvostBodyAdmin(admin.ModelAdmin):
-    list_display = ('email','name','provost_body_role', 'department_role', 'department')
-    search_fields = ('email','name', 'department', 'provost_body_role', 'department_role')
+    list_display = ('email','name','provost_body_role', 'department_role', 'department','hall')
+    search_fields = ('email','name', 'department', 'provost_body_role', 'department_role','hall')
     list_filter = ('provost_body_role', 'department_role', 'department')
 
 
@@ -120,8 +120,8 @@ class ProvostBodyAdmin(admin.ModelAdmin):
 # =============================
 @admin.register(OfficialPerson)
 class OfficialPersonAdmin(admin.ModelAdmin):
-    list_display = ('email', 'name', 'official_role')
-    search_fields = ('email', 'name', 'official_role')
+    list_display = ('email', 'name', 'official_role','hall')
+    search_fields = ('email', 'name', 'official_role','hall')
     list_filter = ('official_role',)
 
 
