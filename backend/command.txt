@@ -108,15 +108,15 @@ Save and exit nano:
 ✅ System Goal
 ✅ Guest Registration
 ✅ Sports element
-✅ 
-✅ 
+✅ Meeting
+✅ Notice Board
 ✅ 
 ✅ 
 ✅ 
 ✅ 
 ❌ Forum
-❌ Meeting
-❌ Notice Board
+❌ 
+❌ 
 ❌ Lost and Found
 ❌ Feed Back 
 ❌ Food/Item

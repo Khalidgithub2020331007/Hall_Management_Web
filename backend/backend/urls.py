@@ -7,6 +7,7 @@ urlpatterns = [
     path('registration/', include('registration.urls')),
     path('complain/', include('complain.urls')),
     path('guest_registration/', include('guest_registration.urls')),
+    path('notice_board/', include('notice_board.urls')),
 ]
 
 if settings.DEBUG:  # Now you can use settings.DEBUG
