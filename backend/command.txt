@@ -38,12 +38,8 @@ python manage.py migrate
 
 
 
-<<<<<<< HEAD
-# Delete all migration files (except __init__.py) inside admission/migrations/
-=======
 
 ## Delete all migration files (except __init__.py) inside admission/migrations/
->>>>>>> develop_khalid
 
 find admission/migrations -name "*.py" -not -name "__init__.py" -delete
 
@@ -120,23 +116,11 @@ Save and exit nano:
 ✅ Sports element
 ✅ Meeting
 ✅ Notice Board
-<<<<<<< HEAD
-✅ 
-=======
 ✅ Lost and Found
->>>>>>> develop_khalid
-✅ 
-✅ 
+✅ Event
+✅ Official/Transaction
 ✅ 
 ❌ Forum
-<<<<<<< HEAD
-❌ 
-❌ 
-❌ Lost and Found
-=======
->>>>>>> develop_khalid
 ❌ Feed Back 
 ❌ Food/Item
 ❌ Dinning/Canteen /Shop
-❌ Event
-❌ Official/Transaction

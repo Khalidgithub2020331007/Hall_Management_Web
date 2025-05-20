@@ -31,10 +31,8 @@ INSTALLED_APPS = [
     'complain',
     'meetings',
     'events',
-<<<<<<< HEAD
     'forum',
-=======
->>>>>>> main
+    'event',
     'official_transaction',
     'notice_board',
     'lost_and_found',
