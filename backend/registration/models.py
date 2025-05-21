@@ -90,7 +90,7 @@ class Application(models.Model):
     study_program = models.CharField(max_length=20, choices=STUDY_PROGRAM_CHOICES)
     session = models.CharField(max_length=10, choices=SESSION_CHOICES)
     semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES)
-    premanent_address = models.TextField()
+    permanent_address = models.TextField()
     home_distance_from_SUST_in_km = models.FloatField()
     family_monthly_income = models.PositiveIntegerField()
     special_reason_for_hall_seat = models.TextField(blank=True, null=True)
