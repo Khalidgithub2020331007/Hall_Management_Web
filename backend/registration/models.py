@@ -122,10 +122,6 @@ class Application(models.Model):
 
     def __str__(self):
         return f"{self.registration_number} - {self.name}"
-    def __str__(self):
-        return f"{self.registration_number} - {self.name}"
-
-
 
 # =====================
 # USER INFORMATION MODEL
