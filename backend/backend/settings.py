@@ -26,31 +26,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Your apps
     'complain',
-<<<<<<< HEAD
-    'meetings',
     'events',
     'forum',
-    'event',
     'official_transaction',
     'notice_board',
     'lost_and_found',
-    'forum',
     'sport_equipment',
-=======
-    'events',
-    'forum',
->>>>>>> develop_khalid
     'guest_registration',
-    'lost_and_found',
     'meetings',
-    'notice_board',
-    'official_transaction',
     'registration',
-    'sport_equipment',
+
+    # 3rd-party apps
     'corsheaders',
-    'rest_framework'
+    'rest_framework',
 ]
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
