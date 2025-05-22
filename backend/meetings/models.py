@@ -69,4 +69,6 @@ class AddTopic(models.Model):
             self.meeting.add_topic(self.topic_text.strip())
 
     def __str__(self):
+
         return f"Topic: {self.topic_text} (Meeting ID: {self.meeting.meeting_id})"
+# >>>>>>> develop_khalid

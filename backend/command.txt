@@ -52,6 +52,7 @@ python manage.py migrate
 >>>>>>> develop_khalid
 
 find admission/migrations -name "*.py" -not -name "__init__.py" -delete
+
 find admission/migrations -name "*.pyc" -delete
 
 # Drop the database or the specific table if needed (SQLite case):

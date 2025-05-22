@@ -26,17 +26,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'registration',
-    'corsheaders',
     'complain',
-    'meetings',
     'events',
     'forum',
-    'official_transaction',
-    'notice_board',
-    'lost_and_found',
-    'sport_equipment',
     'guest_registration',
+    'lost_and_found',
+    'meetings',
+    'notice_board',
+    'official_transaction',
+    'registration',
+    'sport_equipment',
+    'corsheaders',
     'rest_framework'
 ]
 
@@ -50,10 +50,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 ROOT_URLCONF = 'backend.urls'
 

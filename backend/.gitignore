@@ -1,3 +1,6 @@
-*.pyc
-__pycache__/
+# Add these lines
 django_env/
+__pycache__/
+*.pyc
+db.sqlite3django_env/
+*.zip

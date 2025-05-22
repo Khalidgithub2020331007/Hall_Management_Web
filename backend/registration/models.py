@@ -186,7 +186,7 @@ class Admission(models.Model):
                     'password': self.password,
                     'blood_group': application.blood_group,
                     'hall': self.hall,
-                    'user_role': 'Student'
+                    'user_role': 'student'
                 }
             )
 
@@ -293,7 +293,6 @@ class AddOffice(models.Model):
                     'blood_group': self.blood_group,
                     'hall': self.hall,
                     'user_role': self.user_role,
-                    'hall':self.hall
                 }
             )
 
