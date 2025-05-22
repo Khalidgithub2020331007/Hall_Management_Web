@@ -25,8 +25,5 @@ class AddTopicSerializer(serializers.ModelSerializer):
         meeting_time = data['meeting_date_time'].meeting_date_time
         if meeting_time < timezone.now():
             raise serializers.ValidationError("Cannot add topic to past meetings.")
-<<<<<<< HEAD
+# <<<<<<< HEAD
         return data
-=======
-        return data
->>>>>>> develop_khalid

@@ -26,9 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'registration',
-    'corsheaders',
     'complain',
+<<<<<<< HEAD
     'meetings',
     'events',
     'forum',
@@ -38,7 +37,18 @@ INSTALLED_APPS = [
     'lost_and_found',
     'forum',
     'sport_equipment',
+=======
+    'events',
+    'forum',
+>>>>>>> develop_khalid
     'guest_registration',
+    'lost_and_found',
+    'meetings',
+    'notice_board',
+    'official_transaction',
+    'registration',
+    'sport_equipment',
+    'corsheaders',
     'rest_framework'
 ]
 

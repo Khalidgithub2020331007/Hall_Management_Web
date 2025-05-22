@@ -199,7 +199,7 @@ class Admission(models.Model):
                     'semester': application.semester,
                     'room_number': self.room_number.room_number,
                     'session': application.session,
-                    'hall':application.hall
+                    'hall':self.hall
                 }
             )
 

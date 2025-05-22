@@ -25,9 +25,9 @@ class SportsEquipmentAdmin(admin.ModelAdmin):
         'guard_email__name',
         'equipment_name_and_number',
         'guard_email__hall__hall_name',
-        'hall'
-
+        # Remove 'hall'
     ]
+    
 
     def hall(self, obj):
         return obj.guard_email.hall

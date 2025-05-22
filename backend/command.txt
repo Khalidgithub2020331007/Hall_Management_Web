@@ -1,3 +1,12 @@
+## for  a frontend developer to setup in windows 
+pip install django    
+pip install djangorestframework  
+pip install django-cors-headers  
+pip install Pillow 
+python -m venv django_env 
+.\django_env\Scripts\Activate.ps1
+ python manage.py runserver
+
 
  // For migration and run
 
@@ -117,10 +126,17 @@ Save and exit nano:
 ✅ Meeting
 ✅ Notice Board
 ✅ Lost and Found
+<<<<<<< HEAD
 ✅ Event
 ✅ Official/Transaction
 ✅ 
 ❌ Forum
+=======
+✅ Forum
+✅ Event
+✅ Official/Transaction
+✅ 
+>>>>>>> develop_khalid
 ❌ Feed Back 
 ❌ Food/Item
 ❌ Dinning/Canteen /Shop

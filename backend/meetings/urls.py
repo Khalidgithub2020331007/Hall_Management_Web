@@ -8,8 +8,4 @@ router.register('topics', AddTopicViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-<<<<<<< HEAD
 ]
-=======
-]
->>>>>>> develop_khalid
