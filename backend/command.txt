@@ -126,17 +126,10 @@ Save and exit nano:
 ✅ Meeting
 ✅ Notice Board
 ✅ Lost and Found
-<<<<<<< HEAD
-✅ Event
-✅ Official/Transaction
-✅ 
-❌ Forum
-=======
 ✅ Forum
 ✅ Event
 ✅ Official/Transaction
 ✅ 
->>>>>>> develop_khalid
 ❌ Feed Back 
 ❌ Food/Item
 ❌ Dinning/Canteen /Shop
