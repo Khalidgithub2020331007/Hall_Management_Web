@@ -104,10 +104,25 @@ class Application(models.Model):
     convicted = models.BooleanField(help_text='Have ever been penalized by university authority?')
     profile_picture = models.ImageField(upload_to='student_profile_pictures/', null=True, blank=True)
 
+
+    def clean(self):
+        super().clean()
+        if self.is_resident:
+            if not self.resident_months_in_university_hall or self.resident_months_in_university_hall <= 0:
+                raise ValidationError({
+                    'resident_months_in_university_hall': 'Must be greater than 0 if the student is a resident.'
+                })
+        else:
+            # Optional: force it to zero to prevent manual error
+            self.resident_months_in_university_hall = 0
+
+    def save(self, *args, **kwargs):
+        if not self.is_resident:
+            self.resident_months_in_university_hall = 0
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.registration_number} - {self.name}"
-
-
 
 # =====================
 # USER INFORMATION MODEL

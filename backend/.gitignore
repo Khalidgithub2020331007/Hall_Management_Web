@@ -1,6 +1,5 @@
-# Add these lines
-django_env/
 __pycache__/
 *.pyc
-db.sqlite3
-*.zip
+*.pyo
+*.pyd
+*.sqlite3
