@@ -38,7 +38,7 @@ OFFICE_PERSON_ROLE = [
     ('dining', 'Dining'),
     ('shop', 'Shop'),
     ('canteen', 'Canteen'),
-    ('others', 'Others'),
+    ('others', 'Others')
 ]
 
 # =========================
