@@ -1,6 +1,8 @@
 from django.db import models, transaction
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from choices import *
+import string
+import random
 # =====================
 # HALL MODEL
 # =====================
@@ -171,7 +173,7 @@ class Admission(models.Model):
         to_field='registration_number',
         primary_key=True
     )
-    password = models.CharField(max_length=100)
+    password = models.CharField(max_length=100, editable=False)  # Not editable via forms/admin
     room_number = models.ForeignKey(Room, on_delete=models.CASCADE)
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
 
@@ -183,6 +185,9 @@ class Admission(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean()
+                # Auto-generate password if not set
+        if not self.password:
+            self.password = self.generate_random_password()
         application = self.registration_number
 
         with transaction.atomic():
@@ -219,9 +224,13 @@ class Admission(models.Model):
 
             application.delete()
 
+    @staticmethod
+    def generate_random_password(length=8):
+        characters = string.ascii_letters + string.digits
+        return ''.join(random.choices(characters, k=length))
+
     def __str__(self):
         return str(self.registration_number.registration_number)
-
 
 # =====================
 # PROVOST BODY MODEL
@@ -233,6 +242,21 @@ class ProvostBody(models.Model):
 
     department = models.CharField(max_length=100, default='')
     department_role = models.CharField(max_length=100,choices=DEPARTMENT_ROLE,default='Professor')
+    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
+
+
+
+    def __str__(self):
+        return self.name
+    
+# =====================
+# Dining/Shop/Canteen Model
+# =====================
+class Dining_Shop_Canteen(models.Model):
+    email = models.EmailField("Official Email",unique=True)  # Usually, email should be unique
+    name=models.CharField(max_length=100)
+    official_role = models.CharField(max_length=100,choices=OFFICE_PERSON_ROLE,default='Electrician')
+
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
 
 
@@ -289,7 +313,11 @@ class AddOffice(models.Model):
                 raise ValidationError("Provost body role, department role, and department must be provided for provost body.")
         elif self.user_role == 'official_person':
             if not self.official_role:
-                raise ValidationError("Official person type must be selected for official person.")
+                raise ValidationError({'official_role': 'Official role must be selected for official person.'})
+
+        elif self.official_role not in ['dining', 'shop', 'canteen']:
+            raise ValidationError("Valid Dining/Shop/Canteen role must be selected (dining, shop, or canteen).")
+
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -329,6 +357,18 @@ class AddOffice(models.Model):
 
 
                 OfficialPerson.objects.update_or_create(
+                    email=self.email,
+                    defaults={
+                        'name':self.name,
+                        'official_role': self.official_role,
+                        'hall':self.hall
+                    }
+                ) 
+            # Handle dining/shop/canteen
+            elif self.user_role == 'dining_shop_canteen':
+
+
+                Dining_Shop_Canteen.objects.update_or_create(
                     email=self.email,
                     defaults={
                         'name':self.name,

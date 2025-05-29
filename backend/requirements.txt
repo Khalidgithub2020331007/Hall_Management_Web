@@ -8,14 +8,6 @@ python -m venv django_env
  python manage.py runserver
 
 
-## For all installation in  a one command
-
-python3 -m venv env
-source env/bin/activate
-pip install --upgrade pip
-pip install django djangorestframework django-cors-headers Pillow
-
-
  // For migration and run
 
 source django_env/bin/activate
@@ -141,15 +133,3 @@ Save and exit nano:
 ❌ Feed Back 
 ❌ Food/Item
 ❌ Dinning/Canteen /Shop
-
-
-
-
-### install after pull
-
-pip install django-cors-headers
-pip install djangorestframework
-pip install Pillow
-
-python manage.py makemigrations
-python manage.py migrate
