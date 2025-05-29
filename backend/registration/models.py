@@ -254,6 +254,21 @@ class OfficialPerson(models.Model):
     def __str__(self):
         return self.email
 
+# =====================
+# Dining/Shop/Canteen Model
+# =====================
+class Dining_Shop_Canteen(models.Model):
+    email = models.EmailField("Official Email",unique=True)  # Usually, email should be unique
+    name=models.CharField(max_length=100)
+    official_role = models.CharField(max_length=100,choices=OFFICE_PERSON_ROLE,default='dining')
+
+    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
+
+
+
+    def __str__(self):
+        return self.name
+
 
 
 class AddOffice(models.Model):
@@ -290,7 +305,11 @@ class AddOffice(models.Model):
                 raise ValidationError("Provost body role, department role, and department must be provided for provost body.")
         elif self.user_role == 'official_person':
             if not self.official_role:
-                raise ValidationError("Official person type must be selected for official person.")
+                raise ValidationError({'official_role': 'Official role must be selected for official person.'})
+
+        elif self.official_role not in ['dining', 'shop', 'canteen']:
+            raise ValidationError("Valid Dining/Shop/Canteen role must be selected (dining, shop, or canteen).")
+
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -330,6 +349,18 @@ class AddOffice(models.Model):
 
 
                 OfficialPerson.objects.update_or_create(
+                    email=self.email,
+                    defaults={
+                        'name':self.name,
+                        'official_role': self.official_role,
+                        'hall':self.hall
+                    }
+                ) 
+            # Handle dining/shop/canteen
+            elif self.user_role == 'dining_shop_canteen':
+
+
+                Dining_Shop_Canteen.objects.update_or_create(
                     email=self.email,
                     defaults={
                         'name':self.name,

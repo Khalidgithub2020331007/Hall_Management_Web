@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import (
     Hall, Room, Application, Admission,
     UserInformation, Student,
-    ProvostBody, OfficialPerson, AddOffice
+    ProvostBody, OfficialPerson, AddOffice,Dining_Shop_Canteen
 )
 
 
@@ -123,6 +123,17 @@ class OfficialPersonAdmin(admin.ModelAdmin):
     list_display = ('email', 'name', 'official_role','hall')
     search_fields = ('email', 'name', 'official_role','hall')
     list_filter = ('official_role',)
+
+# =============================
+# Dining Canteen Shop ADMIN
+# =============================
+@admin.register(Dining_Shop_Canteen)
+class DiningShopCanteenAdmin(admin.ModelAdmin):
+    list_display = ('email', 'name', 'official_role', 'hall')
+    search_fields = ('email', 'name', 'official_role', 'hall__hall_name')
+    list_filter = ('official_role', 'hall')  
+
+
 
 
 # =============================

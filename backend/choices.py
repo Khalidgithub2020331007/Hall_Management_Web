@@ -8,6 +8,7 @@ USER_ROLE = [
     ('student', 'Student'),
     ('provost_body', 'Provost Body'),
     ('official_person', 'Official Person'),
+    ('dining_shop_canteen', 'Dining/Shop/Canteen'),
 ]
 
 PROVOST_BODY_ROLE = [
@@ -29,13 +30,15 @@ OFFICE_PERSON_ROLE = [
     ('cleaner', 'Cleaner'),
     ('electrician', 'Electrician'),
     ('plumber', 'Plumber'),
-    ('swiper', 'Swiper'),
     ('gardener', 'Gardener'),
     ('office_assistant', 'Office Assistant'),
     ('office_attendant', 'Office Attendant'),
     ('guard', 'Guard'),
     ('senior_assistant', 'Senior Assistant'),
-    ('dining_shopping_canteen', 'Dining/Shopping/Canteen'),
+    ('dining', 'Dining'),
+    ('shop', 'Shop'),
+    ('canteen', 'Canteen'),
+    ('others', 'Others'),
 ]
 
 # =========================
