@@ -30,7 +30,6 @@ OFFICE_PERSON_ROLE = [
     ('cleaner', 'Cleaner'),
     ('electrician', 'Electrician'),
     ('plumber', 'Plumber'),
-    ('swiper', 'Swiper'),
     ('gardener', 'Gardener'),
     ('office_assistant', 'Office Assistant'),
     ('office_attendant', 'Office Attendant'),

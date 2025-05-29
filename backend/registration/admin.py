@@ -124,6 +124,17 @@ class OfficialPersonAdmin(admin.ModelAdmin):
     search_fields = ('email', 'name', 'official_role','hall')
     list_filter = ('official_role',)
 
+# =============================
+# Dining Canteen Shop ADMIN
+# =============================
+@admin.register(Dining_Shop_Canteen)
+class DiningShopCanteenAdmin(admin.ModelAdmin):
+    list_display = ('email', 'name', 'official_role', 'hall')
+    search_fields = ('email', 'name', 'official_role', 'hall__hall_name')
+    list_filter = ('official_role', 'hall')  
+
+
+
 
 # =============================
 # Dining Canteen Shop ADMIN

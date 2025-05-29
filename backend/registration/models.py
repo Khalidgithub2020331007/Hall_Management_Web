@@ -277,6 +277,21 @@ class OfficialPerson(models.Model):
     def __str__(self):
         return self.email
 
+# =====================
+# Dining/Shop/Canteen Model
+# =====================
+class Dining_Shop_Canteen(models.Model):
+    email = models.EmailField("Official Email",unique=True)  # Usually, email should be unique
+    name=models.CharField(max_length=100)
+    official_role = models.CharField(max_length=100,choices=OFFICE_PERSON_ROLE,default='dining')
+
+    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
+
+
+
+    def __str__(self):
+        return self.name
+
 
 
 class AddOffice(models.Model):
