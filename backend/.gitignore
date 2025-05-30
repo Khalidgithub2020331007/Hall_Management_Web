@@ -14,3 +14,4 @@ django_env/
 *.bak
 *.orig
 *.DS_Store  
+db.sqlite3 

@@ -1,12 +1,9 @@
 from django.db import models, transaction
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from choices import *
-<<<<<<< HEAD
-=======
 import string
 from django.utils.translation import gettext_lazy as _
 import random
->>>>>>> 72366e15 (WIP: add initial migrations and updates)
 # =====================
 # HALL MODEL
 # =====================
