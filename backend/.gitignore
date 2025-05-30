@@ -1,4 +1,14 @@
 __pycache__/
 *.pyc
 django_env/
-django_env/
+*.log
+*.pot
+*.mo
+*.db
+*.sqlite
+*.swp
+*.swo
+*.bak
+*.orig
+*.DS_Store  
+db.sqlite3 
