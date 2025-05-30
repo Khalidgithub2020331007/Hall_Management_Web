@@ -98,7 +98,7 @@ class AdmissionAdmin(admin.ModelAdmin):
 class StudentAdmin(admin.ModelAdmin):
     list_display = (
         'registration_number', 'email','name', 'department',
-        'semester', 'session', 'room_number','hall'
+        'semester', 'session', 'room','hall'
     )
     search_fields = ('registration_number', 'email', 'department', 'semester', 'room_number','hall')
     list_filter = ('department', 'semester')
@@ -132,6 +132,8 @@ class DiningShopCanteenAdmin(admin.ModelAdmin):
     list_display = ('email', 'name', 'official_role', 'hall')
     search_fields = ('email', 'name', 'official_role', 'hall__hall_name')
     list_filter = ('official_role', 'hall')  
+
+
 
 
 
