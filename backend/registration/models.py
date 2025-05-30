@@ -2,6 +2,7 @@ from django.db import models, transaction
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from choices import *
 import string
+from django.utils.translation import gettext_lazy as _
 import random
 # =====================
 # HALL MODEL
@@ -68,9 +69,12 @@ class Room(models.Model):
 
     def save(self, *args, **kwargs):
         self.clean()
+        if self.hall.room_list is None:
+            self.hall.room_list = []
         if self.room_number not in self.hall.room_list:
             self.hall.room_list.append(self.room_number)
             self.hall.save(update_fields=["room_list"])
+
         super().save(*args, **kwargs)
 
 
@@ -154,13 +158,14 @@ class Student(models.Model):
     name=models.CharField(max_length=100,default="")
     department = models.CharField(max_length=100, default='')
     semester = models.CharField(max_length=20)
-    room_number = models.CharField(max_length=10)
+    room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, blank=True)
     session = models.CharField(max_length=10)
     hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
 
 
     def __str__(self):
-        return f"{self.registration_number} - {self.email}"
+        return f"{self.name} ({self.registration_number})"
+    
 
 
 # =====================
@@ -182,6 +187,9 @@ class Admission(models.Model):
             raise ValidationError("Selected room does not belong to the selected hall.")
         if Student.objects.filter(registration_number=self.registration_number.registration_number).exists():
             raise ValidationError("This student is already admitted.")
+        if self.is_resident and not self.attached_hall:
+            raise ValidationError({'attached_hall': 'Resident must be attached to a hall.'})
+
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -216,7 +224,7 @@ class Admission(models.Model):
                     'name':application.name,
                     'department': application.department_name,
                     'semester': application.semester,
-                    'room_number': self.room_number.room_number,
+                    'room_number': self.room_number,
                     'session': application.session,
                     'hall':self.hall
                 }
@@ -249,20 +257,7 @@ class ProvostBody(models.Model):
     def __str__(self):
         return self.name
     
-# =====================
-# Dining/Shop/Canteen Model
-# =====================
-class Dining_Shop_Canteen(models.Model):
-    email = models.EmailField("Official Email",unique=True)  # Usually, email should be unique
-    name=models.CharField(max_length=100)
-    official_role = models.CharField(max_length=100,choices=OFFICE_PERSON_ROLE,default='Electrician')
 
-    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
-
-
-
-    def __str__(self):
-        return self.name
 
 # =====================
 # Official Person Model
@@ -277,13 +272,14 @@ class OfficialPerson(models.Model):
     def __str__(self):
         return self.email
 
+
 # =====================
 # Dining/Shop/Canteen Model
 # =====================
 class Dining_Shop_Canteen(models.Model):
     email = models.EmailField("Official Email",unique=True)  # Usually, email should be unique
     name=models.CharField(max_length=100)
-    official_role = models.CharField(max_length=100,choices=OFFICE_PERSON_ROLE,default='dining')
+    official_role = models.CharField(max_length=100,choices=OFFICE_PERSON_ROLE,default='Electrician')
 
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
 
@@ -293,7 +289,9 @@ class Dining_Shop_Canteen(models.Model):
         return self.name
 
 
-
+# =====================
+# AddOffice Model
+# =====================
 class AddOffice(models.Model):
 
     name = models.CharField(max_length=100)
@@ -322,17 +320,19 @@ class AddOffice(models.Model):
     def clean(self):
         if not self.user_role:
             raise ValidationError("User role must be provided.")
-
+    
         if self.user_role == 'provost_body':
             if not self.provost_body_role or not self.department_role or not self.department:
                 raise ValidationError("Provost body role, department role, and department must be provided for provost body.")
+    
         elif self.user_role == 'official_person':
             if not self.official_role:
                 raise ValidationError({'official_role': 'Official role must be selected for official person.'})
-
-        elif self.official_role not in ['dining', 'shop', 'canteen']:
-            raise ValidationError("Valid Dining/Shop/Canteen role must be selected (dining, shop, or canteen).")
-
+    
+        elif self.user_role == 'dining_shop_canteen':
+            if self.official_role not in ['dining', 'shop', 'canteen']:
+                raise ValidationError({'official_role': 'Role must be either dining, shop, or canteen.'})
+    
 
     def save(self, *args, **kwargs):
         self.full_clean()
