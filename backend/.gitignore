@@ -12,3 +12,4 @@ django_env/
 *.orig
 *.DS_Store  
 db.sqlite3 
+media

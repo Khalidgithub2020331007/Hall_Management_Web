@@ -88,7 +88,7 @@ class Application(models.Model):
     name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
-    blood_group = models.CharField(max_length=10)
+    blood_group =models.CharField(max_length=100,choices= BLOOD_GROUP_CHOICES)
     father_name = models.CharField(max_length=100)
     mother_name = models.CharField(max_length=100)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
@@ -286,7 +286,8 @@ class Dining_Shop_Canteen(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.email}) - {self.official_role} [Hall ID: {self.hall}]"
+
 
 
 # =====================
@@ -298,7 +299,7 @@ class AddOffice(models.Model):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=15)
     password = models.CharField(max_length=100)
-    blood_group = models.CharField(max_length=10)
+    blood_group =models.CharField(max_length=100,choices= BLOOD_GROUP_CHOICES)
     hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
     user_role = models.CharField(max_length=100, choices=USER_ROLE)
 

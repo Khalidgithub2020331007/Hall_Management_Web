@@ -41,6 +41,13 @@ OFFICE_PERSON_ROLE = [
     ('others', 'Others'),
 ]
 
+OUTLET_ROLE_CHOICES = [
+    ('dining', 'Dining'),
+    ('canteen', 'Canteen'),
+    ('shop', 'Shop'),
+]
+
+
 # =========================
 # Complaint Tags
 # =========================
@@ -101,4 +108,20 @@ STATUS_CHOICES = [
     ('received', 'Received'),
     ('in_process', 'In Process'),
     ('resolved', 'Resolved'),
+]
+BLOOD_GROUP_CHOICES = [
+    ('A+', 'A positive (A+)'),
+    ('A-', 'A negative (A-)'),
+    ('B+', 'B positive (B+)'),
+    ('B-', 'B negative (B-)'),
+    ('AB+', 'AB positive (AB+)'),
+    ('AB-', 'AB negative (AB-)'),
+    ('O+', 'O positive (O+)'),
+    ('O-', 'O negative (O-)'),
+    ('Others', 'Others'),
+]
+MEAL_TIME_CHOICES = [
+    ('breakfast', 'Breakfast'),
+    ('lunch', 'Lunch'),
+    ('dinner', 'Dinner'),
 ]

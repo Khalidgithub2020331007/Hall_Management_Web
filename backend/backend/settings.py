@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
     # Your apps
     'complain',
+    'dining_canteen_shop',
     'events',
     'forum',
     'official_transaction',

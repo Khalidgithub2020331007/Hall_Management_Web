@@ -11,10 +11,10 @@ urlpatterns = [
     path('lost_and_found/', include('lost_and_found.urls')),
     path('meetings/', include('meetings.urls')),
     path('events/', include('events.urls')),
-    path('official_transaction/', include('official_transaction.urls')),
     path('forum/', include('forum.urls')),
     path('official_transaction/', include('official_transaction.urls')),
     path('sport_equipment/', include('sport_equipment.urls')),
+    path('dining_canteen_shop/', include('dining_canteen_shop.urls')),
     
 
 ]
