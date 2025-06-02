@@ -23,6 +23,7 @@ const mockUsers = [
     role: "student",
     name: "Student User",
     hallName: "First Hall",
+    registration_number:"2020331036"
   },
   {
     email: "dining@sust.com",
@@ -69,6 +70,12 @@ const Login = () => {
         localStorage.setItem("userRole", foundUser.role);
         localStorage.setItem("userName", foundUser.name);
         localStorage.setItem("hallName", foundUser.hallName);
+        if (foundUser.role === "student") {
+          localStorage.setItem(
+            "registrationNumber",
+            foundUser.registration_number
+          );
+        }
 
         navigate("/dashboard");
       } else {
