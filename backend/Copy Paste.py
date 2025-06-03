@@ -1,44 +1,44 @@
 # =================
-# events models.py
+# events admin.py
 # =================
 
-from django.db import models, transaction
-from registration.models import ProvostBody
 
-class Create_Event(models.Model):
-    event_id = models.AutoField(primary_key=True)
-    event_name = models.CharField(max_length=255)
-    event_description = models.TextField()
-    event_date_time = models.DateTimeField()
-    event_location = models.TextField()
-    event_file = models.JSONField(default=list, blank=True, null=True)
-    event_publicist_email = models.ForeignKey(
-        ProvostBody,
-        on_delete=models.CASCADE,
-        related_name='events'
-    )
+from django.contrib import admin
+from .models import Create_Event, AddFile
 
-    def add_file(self, file_path: str):
-        file_path = file_path.strip()
-        if self.event_file is None:
-            self.event_file = []
-        if file_path not in self.event_file:
-            self.event_file.append(file_path)
-            self.save(update_fields=['event_file'])
+class AddFileInline(admin.TabularInline):
+    model = AddFile
+    extra = 1
+    fields = ['file']
 
-    def __str__(self):
-        return f"{self.event_name} - {self.event_publicist_email.email} ({self.event_date_time.strftime('%Y-%m-%d')})"
+@admin.register(Create_Event)
+class EventAdmin(admin.ModelAdmin):
+    list_display = [
+        'event_name',
+        'event_date_time',
+        'event_publicist_email',
+        'event_publicist_email_name',
+        'event_publicist_email_hall'
+    ]
+    search_fields = [
+        'event_name',
+        'event_publicist_email__email',
+        'event_publicist_email__name',
+        'event_publicist_email__hall__name',  # If hall is FK with name field
+    ]
+    inlines = [AddFileInline]
+    readonly_fields = ['event_file']
+    list_filter = ['event_date_time', 'event_publicist_email__hall']
+    ordering = ['-event_date_time']
 
+    def event_publicist_email_name(self, obj):
+        return obj.event_publicist_email.name
+    event_publicist_email_name.short_description = 'Publicist Name'
 
-class AddFile(models.Model):
-    event = models.ForeignKey(Create_Event, on_delete=models.CASCADE, related_name='files')
-    file = models.FileField(upload_to='events/')
-
-    def __str__(self):
-        return f"File for {self.event.event_name} - {self.file.name}"
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        with transaction.atomic():
-            super().save(*args, **kwargs)
-            self.event.add_file(self.file.name)
+    def event_publicist_email_hall(self, obj):
+        # If hall is FK, show hall name, else just show hall value
+        hall = getattr(obj.event_publicist_email, 'hall', None)
+        if hasattr(hall, 'name'):
+            return hall.name
+        return hall
+    event_publicist_email_hall.short_description = 'Hall'
