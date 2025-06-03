@@ -1,17 +1,22 @@
-from rest_framework import viewsets
-from .models import Complain,SystemGoal
-from .serializers import ComplainSerializer,SystemGoalSerializer
+# =================
+# Complain views.py
+# =================
 
-class ComplainViewSet(viewsets.ModelViewSet):
-    queryset = Complain.objects.all()
-    serializer_class = ComplainSerializer
-    def perform_create(self,serializer):
-        instance=serializer.save()
-        instance.save()
-    def perform_update(self,serializer):
-        instance=serializer.save()
-        instance.save()
-    
+
+from rest_framework import viewsets
+from .models import Make_Complaints, SystemGoal
+from .serializers import MakeComplaintsSerializer, SystemGoalSerializer
+
+class Make_ComplaintsViewSet(viewsets.ModelViewSet):
+    queryset = Make_Complaints.objects.all()
+    serializer_class = MakeComplaintsSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def perform_update(self, serializer):
+        serializer.save()
+
 class SystemGoalViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset=SystemGoal.objects.all()
-    serializer_class=SystemGoalSerializer
+    queryset = SystemGoal.objects.all()
+    serializer_class = SystemGoalSerializer
