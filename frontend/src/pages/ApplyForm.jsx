@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const ApplyForm = () => {
   const specialclass1 = "text-black bg-white shadow-md";
@@ -17,7 +17,7 @@ const ApplyForm = () => {
     study_program: "",
     session: "",
     semester: "",
-    premanent_address: "",
+    permanent_address: "",
     home_distance_from_SUST_in_km: "",
     family_monthly_income: "",
     special_reason_for_hall_seat: "",
@@ -40,7 +40,7 @@ const ApplyForm = () => {
       .catch((err) => console.error("Failed to fetch halls:", err));
   }, []);
 
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -217,7 +217,7 @@ const ApplyForm = () => {
 
           {/* Additional Info */}
           <textarea
-            name="premanent_address"
+            name="permanent_address"
             placeholder="Permanent Address"
             className="textarea textarea-bordered w-full text-black bg-white shadow-md md:col-span-2"
             onChange={handleChange}
