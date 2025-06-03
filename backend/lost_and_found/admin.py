@@ -1,7 +1,12 @@
-from django.contrib import admin
-from .models import LostAndFound
+# =================
+# lost_and_found admin.py
+# =================
 
-@admin.register(LostAndFound)
+
+from django.contrib import admin
+from .models import New_LostAndFound
+
+@admin.register(New_LostAndFound)
 class LostAndFoundAdmin(admin.ModelAdmin):
     list_display = (
         'element_name',
