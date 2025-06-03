@@ -1,6 +1,7 @@
 # =================
-# Complain models.py
+# Complain  Models.py
 # =================
+
 
 from django.db import models, transaction
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
@@ -56,4 +57,3 @@ class SystemGoal(models.Model):
 
     def __str__(self):
         return f"Complaints: {self.total_complaints_received}, Solved: {self.total_complaints_resolved}"
-

@@ -1,3 +1,4 @@
+
 ## for  a frontend developer to setup in windows 
 pip install django    
 pip install djangorestframework  
@@ -200,6 +201,7 @@ http://127.0.0.1:8000/registration/provostbody/
 http://127.0.0.1:8000/registration/room/
 http://127.0.0.1:8000/registration/student/
 http://127.0.0.1:8000/registration/userinformation/
+
 
 sport_equipment--   
 http://127.0.0.1:8000/sport_equipment/sportsequipment/

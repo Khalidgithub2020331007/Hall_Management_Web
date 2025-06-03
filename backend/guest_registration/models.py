@@ -40,4 +40,3 @@ class Guest(models.Model):
 
     class Meta:
         ordering = ['-entry_date_time']
-    

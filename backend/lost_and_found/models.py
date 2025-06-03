@@ -6,6 +6,7 @@ from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from registration.models import UserInformation
+from django.core.validators import RegexValidator
 
 class New_LostAndFound(models.Model):
     post_id = models.AutoField(primary_key=True)

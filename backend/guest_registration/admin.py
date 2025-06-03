@@ -47,4 +47,3 @@ class GuestAdmin(admin.ModelAdmin):
     def hall(self, obj):
         return obj.reference_email.hall
     hall.short_description = 'Hall'
-
