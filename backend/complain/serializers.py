@@ -1,22 +1,28 @@
 # =================
-# Complain views.py
+# Complain serializers.py
 # =================
 
-
-from rest_framework import viewsets
+from rest_framework import serializers
 from .models import Make_Complaints, SystemGoal
-from .serializers import MakeComplaintsSerializer, SystemGoalSerializer
 
-class Make_ComplaintsViewSet(viewsets.ModelViewSet):
-    queryset = Make_Complaints.objects.all()
-    serializer_class = MakeComplaintsSerializer
+class MakeComplaintsSerializer(serializers.ModelSerializer):
+    # Dynamically add complainant_name from related Student
+    complainant_name = serializers.CharField(source='complainant_registration_number.name', read_only=True)
 
-    def perform_create(self, serializer):
-        serializer.save()
+    class Meta:
+        model = Make_Complaints
+        fields = [
+            'complain_id',
+            'complainant_registration_number',  # input field
+            'complainant_name',                 # read-only display field
+            'complain_date',
+            'complain_tag',
+            'complain_details',
+            'complain_status',
+        ]
 
-    def perform_update(self, serializer):
-        serializer.save()
 
-class SystemGoalViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = SystemGoal.objects.all()
-    serializer_class = SystemGoalSerializer
+class SystemGoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SystemGoal
+        fields = '__all__'
