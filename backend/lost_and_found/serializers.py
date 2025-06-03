@@ -1,7 +1,10 @@
-# lostandfound/serializers.py
+# =================
+# lost_and_found serializers.py
+# =================
+
 
 from rest_framework import serializers
-from .models import LostAndFound
+from .models import New_LostAndFound
 from registration.models import UserInformation
 
 class UserInformationSerializer(serializers.ModelSerializer):
@@ -18,12 +21,13 @@ class LostAndFoundSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = LostAndFound
+        model = New_LostAndFound
         fields = [
             'post_id',
             'post_date_time',
             'element_name',
-            'element_description_location',
+            'element_description',
+            'found_location',
             'contact_number',
             'image',
             'user_email',

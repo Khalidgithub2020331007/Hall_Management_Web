@@ -1,9 +1,14 @@
+# =================
+# forum serializers.py
+# =================
+
+
 from rest_framework import serializers
-from .models import Forum
+from .models import New_Forum_Post
 
 class ForumSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Forum
+        model = New_Forum_Post
         fields = ['post_id', 'user_email', 'post_date_time', 'text_message', 'file']
         read_only_fields = ['post_id', 'post_date_time']
 

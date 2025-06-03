@@ -1,10 +1,13 @@
+# =================
+# lost_and_found models.py
+# =================
 
 from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from registration.models import UserInformation
 
-class LostAndFound(models.Model):
+class New_LostAndFound(models.Model):
     post_id = models.AutoField(primary_key=True)
     post_date_time = models.DateTimeField(auto_now_add=True)
 

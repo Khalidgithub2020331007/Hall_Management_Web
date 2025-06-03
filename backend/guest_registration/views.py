@@ -1,7 +1,11 @@
+# =================
+# guest_registration views.py
+# =================
+
 from rest_framework  import viewsets
-from .models import GuestRegistration
+from .models import Guest
 from guest_registration.serializers import *
 
-class GuestRegistrationViewSet(viewsets.ModelViewSet):
-    queryset=GuestRegistration.objects.all()
-    serializer_class=GuestRegistrationSerializer
+class GuestViewSet(viewsets.ModelViewSet):
+    queryset=Guest.objects.all()
+    serializer_class=GuestSerializer

@@ -1,6 +1,8 @@
-from django.shortcuts import render
+# ========================
+# registration/views.py
+# =====================
 
-# Create your views here.
+from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response

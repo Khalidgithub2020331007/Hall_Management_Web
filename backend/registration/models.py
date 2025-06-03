@@ -1,9 +1,14 @@
+# ========================
+# registration/models.py
+# =====================
+
 from django.db import models, transaction
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from choices import *
 import string
 from django.utils.translation import gettext_lazy as _
 import random
+from django.contrib.auth.hashers import make_password
 # =====================
 # HALL MODEL
 # =====================
@@ -298,7 +303,7 @@ class AddOffice(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=15)
-    password = models.CharField(max_length=100)
+    password = models.CharField(max_length=100, editable=False)  # Not editable via forms/admin
     blood_group =models.CharField(max_length=100,choices= BLOOD_GROUP_CHOICES)
     hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
     user_role = models.CharField(max_length=100, choices=USER_ROLE)
@@ -337,7 +342,11 @@ class AddOffice(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean()
+        if not self.password:
+            self.password = self.generate_random_password()
+
         super().save(*args, **kwargs)
+
 
         with transaction.atomic():
             # Create or update UserInformation
@@ -394,3 +403,9 @@ class AddOffice(models.Model):
                 )
         # Remove this line:
         self.delete()
+    @staticmethod
+    def generate_random_password(length=8):
+        characters = string.ascii_letters + string.digits
+        return ''.join(random.choices(characters, k=length))
+
+    

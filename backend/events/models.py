@@ -1,13 +1,17 @@
+# =================
+# events models.py
+# =================
+
 from django.db import models, transaction
 from registration.models import ProvostBody
 
-class Event(models.Model):
+class Create_Event(models.Model):
     event_id = models.AutoField(primary_key=True)
     event_name = models.CharField(max_length=255)
     event_description = models.TextField()
     event_date_time = models.DateTimeField()
     event_location = models.TextField()
-    event_file = models.JSONField(default=list, blank=True, null=True)  # List of file paths or URLs
+    event_file = models.JSONField(default=list, blank=True, null=True)
     event_publicist_email = models.ForeignKey(
         ProvostBody,
         on_delete=models.CASCADE,
@@ -16,6 +20,8 @@ class Event(models.Model):
 
     def add_file(self, file_path: str):
         file_path = file_path.strip()
+        if self.event_file is None:
+            self.event_file = []
         if file_path not in self.event_file:
             self.event_file.append(file_path)
             self.save(update_fields=['event_file'])
@@ -25,7 +31,7 @@ class Event(models.Model):
 
 
 class AddFile(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='files')
+    event = models.ForeignKey(Create_Event, on_delete=models.CASCADE, related_name='files')
     file = models.FileField(upload_to='events/')
 
     def __str__(self):
@@ -35,6 +41,4 @@ class AddFile(models.Model):
         self.full_clean()
         with transaction.atomic():
             super().save(*args, **kwargs)
-            # Append the file name/path to event_file JSONField
-            # Use self.file.name to get the relative file path stored
             self.event.add_file(self.file.name)

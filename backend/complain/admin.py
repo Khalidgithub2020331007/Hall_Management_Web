@@ -1,8 +1,14 @@
-from django.contrib import admin
-from .models import Complain, SystemGoal
+# =================
+# Complain  admin.py
+# =================
 
-@admin.register(Complain)
-class ComplainAdmin(admin.ModelAdmin):
+
+
+from django.contrib import admin
+from .models import Make_Complaints, SystemGoal
+
+@admin.register(Make_Complaints)
+class MakeComplaintsAdmin(admin.ModelAdmin):
     list_display = (
         'complain_id',
         'complainant_registration_number',

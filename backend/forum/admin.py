@@ -1,7 +1,12 @@
-from django.contrib import admin
-from .models import Forum
 
-@admin.register(Forum)
+# =================
+# forum admin.py
+# =================
+
+from django.contrib import admin
+from .models import New_Forum_Post
+
+@admin.register(New_Forum_Post)
 class ForumAdmin(admin.ModelAdmin):
     list_display = ('post_id', 'user_email', 'user_name', 'post_date_time', 'file', 'hall')
     search_fields = ('user_email__email', 'user_email__name', 'post_date_time', 'user_email__hall__name')
