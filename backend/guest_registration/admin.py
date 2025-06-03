@@ -1,11 +1,16 @@
+# =================
+# guest_registration admin.py
+# =================
+
+
 from django.contrib import admin
-from .models import GuestRegistration
+from .models import Guest
 
 # ====================
 # Guest Admin 
 # ====================
-@admin.register(GuestRegistration)
-class GuestRegistrationAdmin(admin.ModelAdmin):
+@admin.register(Guest)
+class GuestAdmin(admin.ModelAdmin):
     list_display = (
         'guest_id',
         'guest_name',
@@ -42,4 +47,3 @@ class GuestRegistrationAdmin(admin.ModelAdmin):
     def hall(self, obj):
         return obj.reference_email.hall
     hall.short_description = 'Hall'
-
