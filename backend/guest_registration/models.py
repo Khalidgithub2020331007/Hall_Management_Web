@@ -1,11 +1,13 @@
+# =================
+# guest_registration models.py
+# =================
+
 from django.db import models
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from registration.models import UserInformation,OfficialPerson,Hall
-# =======================
-# Guest GuestRegistration
-# =======================
 
-class GuestRegistration(models.Model):
+
+class Guest(models.Model):
     guest_id = models.AutoField(primary_key=True)
     guest_name = models.CharField(max_length=100)
     
@@ -38,4 +40,3 @@ class GuestRegistration(models.Model):
 
     class Meta:
         ordering = ['-entry_date_time']
-    
