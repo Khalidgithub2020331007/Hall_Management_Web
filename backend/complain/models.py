@@ -1,12 +1,15 @@
+# =================
+# Complain  Models.py
+# =================
+
+
 from django.db import models, transaction
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from choices import *
 from registration.models import *
 
-# =================
-# Complain 
-# =================
-class Complain(models.Model):
+
+class Make_Complaints(models.Model):
     complain_id=models.AutoField(primary_key=True)
     complainant_registration_number = models.ForeignKey(Student, on_delete=models.CASCADE)
     complain_date = models.DateField(auto_now_add=True)
@@ -17,6 +20,7 @@ class Complain(models.Model):
     def __str__(self):
         return f"Complain on {self.complain_tag} by {self.complainant_registration_number.registration_number}"
 
+
     def save(self, *args, **kwargs):
         is_new = self._state.adding
 
@@ -24,9 +28,9 @@ class Complain(models.Model):
         old_status = None
         if not is_new and self.pk is not None:
             try:
-                old_complain = Complain.objects.get(pk=self.pk)
+                old_complain = Make_Complaints.objects.get(pk=self.pk)
                 old_status = old_complain.complain_status
-            except Complain.DoesNotExist:
+            except Make_Complaints.DoesNotExist:
                 old_status = None
         
 
@@ -53,4 +57,3 @@ class SystemGoal(models.Model):
 
     def __str__(self):
         return f"Complaints: {self.total_complaints_received}, Solved: {self.total_complaints_resolved}"
-
