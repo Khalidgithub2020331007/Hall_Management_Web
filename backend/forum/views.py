@@ -1,10 +1,15 @@
+# =================
+# forum views.py
+# =================
+
+
 from rest_framework import generics
-from .models import Forum
+from .models import New_Forum_Post
 from .serializers import ForumSerializer
 from rest_framework.permissions import IsAuthenticated
 
 class ForumListCreateView(generics.ListCreateAPIView):
-    queryset = Forum.objects.all().order_by('-post_date_time')
+    queryset = New_Forum_Post.objects.all().order_by('-post_date_time')
     serializer_class = ForumSerializer
     permission_classes = [IsAuthenticated]
 
