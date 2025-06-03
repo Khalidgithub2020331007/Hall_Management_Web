@@ -1,15 +1,28 @@
 # =================
-# Complain urls.py
+# Complain serializers.py
 # =================
 
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import Make_ComplaintsViewSet, SystemGoalViewSet
+from rest_framework import serializers
+from .models import Make_Complaints, SystemGoal
 
-router = DefaultRouter()
-router.register(r'make_complaints', Make_ComplaintsViewSet, basename='make_complaints')
-router.register(r'system_goal', SystemGoalViewSet, basename='system_goal')
+class MakeComplaintsSerializer(serializers.ModelSerializer):
+    # Dynamically add complainant_name from related Student
+    complainant_name = serializers.CharField(source='complainant_registration_number.name', read_only=True)
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
+    class Meta:
+        model = Make_Complaints
+        fields = [
+            'complain_id',
+            'complainant_registration_number',  # input field
+            'complainant_name',                 # read-only display field
+            'complain_date',
+            'complain_tag',
+            'complain_details',
+            'complain_status',
+        ]
+
+
+class SystemGoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SystemGoal
+        fields = '__all__'
