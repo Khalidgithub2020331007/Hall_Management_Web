@@ -1,3 +1,4 @@
+
 ## for  a frontend developer to setup in windows 
 pip install django    
 pip install djangorestframework  
@@ -139,7 +140,8 @@ Save and exit nano:
 ✅ Official/Transaction
 ✅ 
 ✅ Feed Back 
-✅ Food/Item
+✅ Food/Itemsource django_env/bin/activate
+python3 manage.py runserver
 ✅ Dinning/Canteen /Shop
 
 
@@ -153,3 +155,53 @@ pip install django-cors-headers djangorestframework Pillow
 
 python manage.py makemigrations
 python manage.py migrate
+
+
+ALL API List
+
+Complain--
+http://127.0.0.1:8000/complain/make_complaints/
+http://127.0.0.1:8000/complain/systemgoal/
+
+events--
+http://127.0.0.1:8000/events/create_event/
+
+forum--
+http://127.0.0.1:8000/forum/new_forum_post/
+
+dining_canteen_shop--
+http://127.0.0.1:8000/dining_canteen_shop/additem/
+http://127.0.0.1:8000/dining_canteen_shop/feedback/
+http://127.0.0.1:8000/dining_canteen_shop/halloutlet/
+
+guest_registration--
+http://127.0.0.1:8000/guest_registration/guest/
+
+lost_and_found--    
+http://127.0.0.1:8000/lost_and_found/new_lostandfound/
+
+meetings--
+http://127.0.0.1:8000/meetings/addtopic/
+http://127.0.0.1:8000/meetings/createmeeting/
+
+notice_board--
+http://127.0.0.1:8000/notice_board/noticeboard/
+
+official_transaction--
+http://127.0.0.1:8000/official_transaction/createofficialtransaction/
+
+registration--
+http://127.0.0.1:8000/registration/addoffice/
+http://127.0.0.1:8000/registration/admission/
+http://127.0.0.1:8000/registration/application/
+http://127.0.0.1:8000/registration/dining_shop_canteen/
+http://127.0.0.1:8000/registration/hall/
+http://127.0.0.1:8000/registration/officialperson/
+http://127.0.0.1:8000/registration/provostbody/
+http://127.0.0.1:8000/registration/room/
+http://127.0.0.1:8000/registration/student/
+http://127.0.0.1:8000/registration/userinformation/
+
+
+sport_equipment--   
+http://127.0.0.1:8000/sport_equipment/sportsequipment/
