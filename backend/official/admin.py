@@ -41,8 +41,8 @@ class DiningShopCanteenAdmin(admin.ModelAdmin):
 # =============================
 # ADD OFFICE ADMIN
 # =============================
-@admin.register(AddOffice)
-class AddOfficeAdmin(admin.ModelAdmin):
+@admin.register(OfficialRegistration)
+class OfficialRegistrationAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'phone_number', 'user_role', 'hall', 'blood_group')
     search_fields = ('name', 'email', 'phone_number', 'user_role', 'hall__hall_name')
     list_filter = ('user_role', 'hall')

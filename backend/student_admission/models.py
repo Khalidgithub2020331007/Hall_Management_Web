@@ -10,16 +10,44 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from user_info.models import UserInformation
+from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
+
+# =====================
+# PHONE NUMBER VALIDATOR
+# =====================
+phone_regex = RegexValidator(
+    regex=r'^(\+8801[3-9]\d{8}|01[3-9]\d{8})$',
+    message="Phone number must be in the format '+8801XXXXXXXXX' or '01XXXXXXXXX'."
+)
+
+# =====================
+# Registration NUMBER VALIDATOR
+# =====================
+registration_number_validator = RegexValidator(
+    regex=r'^\d{10}$',
+    message='Registration number must be exactly 10 digits.'
+)
 
 # =====================
 # APPLICATION MODEL
 # =====================
+
 class Application(models.Model):
 
 
-    registration_number = models.CharField(max_length=10, primary_key=True)
+    registration_number = models.CharField(
+        max_length=10,
+        primary_key=True,
+        validators=[registration_number_validator],
+        help_text='Must be exactly 10 digits (e.g., 2020331007)'
+    )
+
     name = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=15)
+    phone_number = models.CharField(
+            validators=[phone_regex],
+            max_length=14,
+            help_text="Enter 11-digit local or 14-digit international format (e.g., 018XXXXXXXX or +88018XXXXXXXX)"
+        )    
     email = models.EmailField(unique=True)
     blood_group =models.CharField(max_length=100,choices= BLOOD_GROUP_CHOICES)
     father_name = models.CharField(max_length=100)
@@ -45,14 +73,30 @@ class Application(models.Model):
 
     def clean(self):
         super().clean()
+        
+        # Resident months validation
         if self.is_resident:
             if not self.resident_months_in_university_hall or self.resident_months_in_university_hall <= 0:
                 raise ValidationError({
                     'resident_months_in_university_hall': 'Must be greater than 0 if the student is a resident.'
                 })
         else:
-            # Optional: force it to zero to prevent manual error
             self.resident_months_in_university_hall = 0
+    
+        # Credits validation
+        if self.total_credits_offered <= self.total_credits_completed:
+            raise ValidationError({
+                'total_credits_offered': 'Total credits offered must be greater than total credits completed.',
+                'total_credits_completed': 'Total credits completed must be less than total credits offered.'
+            })
+    
+        # CGPA validation
+        if self.cgpa > 4.0:
+            raise ValidationError({'cgpa': 'CGPA cannot exceed 4.0.'})
+    
+        if self.last_semester_gpa > 4.0:
+            raise ValidationError({'last_semester_gpa': 'Last semester GPA cannot exceed 4.0.'})
+    
 
     def save(self, *args, **kwargs):
         if not self.is_resident:
@@ -95,7 +139,6 @@ class Admission(models.Model):
     password = models.CharField(max_length=100, editable=False)  # Not editable via forms/admin
     room_number = models.ForeignKey(Room, on_delete=models.CASCADE)
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
-
 
     def clean(self):
         if self.room_number.hall != self.hall:

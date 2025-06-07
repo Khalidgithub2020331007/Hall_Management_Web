@@ -1,3 +1,9 @@
+# ================================
+# backend/settings.py
+# =================================
+
+
+
 
 from pathlib import Path
 
@@ -38,12 +44,16 @@ INSTALLED_APPS = [
     'sport_equipment',
     'guest_registration',
     'meetings',
-    'registration',
+    'student_admission',   # Newly added app
+    'halls_and_rooms',     # Newly added app
+    'user_info',           # Newly added app
+    'official',            # Newly added app
 
     # 3rd-party apps
     'corsheaders',
     'rest_framework',
 ]
+
 
 
 MIDDLEWARE = [

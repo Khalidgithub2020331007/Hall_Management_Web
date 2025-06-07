@@ -1,8 +1,10 @@
 from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from registration.models import OfficialPerson
-
+from halls_and_rooms.models import *
+from user_info.models import *
+from official.models import *
+from student_admission.models import *
 class CreateOfficialTransaction(models.Model):
     transaction_id = models.AutoField(primary_key=True)
     transaction_date_time = models.DateTimeField(auto_now_add=True)

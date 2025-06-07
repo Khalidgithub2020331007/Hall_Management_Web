@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from .models import CreateMeeting, AddTopic
-from registration.models import ProvostBody  # if needed
-
+from halls_and_rooms.models import *
+from user_info.models import *
+from official.models import *
+from student_admission.models import *
 
 class CreateMeetingSerializer(serializers.ModelSerializer):
     class Meta:

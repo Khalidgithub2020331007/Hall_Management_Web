@@ -5,8 +5,7 @@
 
 from rest_framework import serializers
 from .models import New_LostAndFound
-from registration.models import UserInformation
-
+from user_info.models import UserInformation
 class UserInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInformation

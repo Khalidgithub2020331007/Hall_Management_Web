@@ -10,6 +10,16 @@ from django.db import transaction
 import string
 import random
 from user_info.models import UserInformation
+from django.core.validators import RegexValidator
+# =====================
+# PHONE NUMBER VALIDATOR
+# =====================
+phone_regex = RegexValidator(
+    regex=r'^(\+8801[3-9]\d{8}|01[3-9]\d{8})$',
+    message="Phone number must be in the format '+8801XXXXXXXXX' or '01XXXXXXXXX'."
+)
+
+
 
 class ProvostBody(models.Model):
     email = models.EmailField("Official Email", unique=True)
@@ -97,10 +107,14 @@ class Dining_Shop_Canteen(models.Model):
 # =====================
 # Add Office Model
 # =====================
-class AddOffice(models.Model):
+class OfficialRegistration(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15)
+    phone_number = models.CharField(
+            validators=[phone_regex],
+            max_length=14,
+            help_text="Enter 11-digit local or 14-digit international format (e.g., 018XXXXXXXX or +88018XXXXXXXX)"
+        )   
     password = models.CharField(max_length=100, editable=False)
     blood_group = models.CharField(max_length=100, choices=BLOOD_GROUP_CHOICES)
     hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
@@ -133,7 +147,6 @@ class AddOffice(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.email}"
-
 
     def clean(self):
         if not self.user_role:

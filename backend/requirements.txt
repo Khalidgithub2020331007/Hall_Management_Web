@@ -9,6 +9,12 @@ python -m venv django_env
  python manage.py runserver
 
 
+
+## For env and run
+
+source django_env/bin/activate
+python3 manage.py runserver
+
 ## For all installation in  a one command
 
 python3 -m venv env
@@ -34,10 +40,7 @@ python3 manage.py migrate
 python3 manage.py createsuperuser
 python3 manage.py runserver
 
-## For env and run
 
-source django_env/bin/activate
-python3 manage.py runserver
 
 ## For specific Migration
 
@@ -190,18 +193,25 @@ http://127.0.0.1:8000/notice_board/noticeboard/
 official_transaction--
 http://127.0.0.1:8000/official_transaction/createofficialtransaction/
 
-registration--
-http://127.0.0.1:8000/registration/addoffice/
-http://127.0.0.1:8000/registration/admission/
-http://127.0.0.1:8000/registration/application/
-http://127.0.0.1:8000/registration/dining_shop_canteen/
-http://127.0.0.1:8000/registration/hall/
-http://127.0.0.1:8000/registration/officialperson/
-http://127.0.0.1:8000/registration/provostbody/
-http://127.0.0.1:8000/registration/room/
-http://127.0.0.1:8000/registration/student/
-http://127.0.0.1:8000/registration/userinformation/
+hall_and_rooms--
+http://127.0.0.1:8000/halls_and_rooms/hall/
+http://127.0.0.1:8000/halls_and_rooms/
 
+Official--
+http://127.0.0.1:8000/official/officialregistration/
+http://127.0.0.1:8000/official/dining_shop_canteen/
+http://127.0.0.1:8000/official/officialperson/
+http://127.0.0.1:8000/admin/official/provostbody/
+
+student_admission--
+
+http://127.0.0.1:8000/student_admission/admission/
+http://127.0.0.1:8000/student_admission/application/
+http://127.0.0.1:8000/student_admission/
+
+user_info--
+http://127.0.0.1:8000/user_info/userinformation/
 
 sport_equipment--   
 http://127.0.0.1:8000/sport_equipment/sportsequipment/
+

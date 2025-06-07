@@ -50,3 +50,6 @@ class StudentAdmin(admin.ModelAdmin):
     )
     search_fields = ('registration_number', 'email', 'department', 'semester', 'room_number','hall')
     list_filter = ('department', 'semester')
+
+
+

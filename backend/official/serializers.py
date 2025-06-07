@@ -4,6 +4,10 @@
 
 from rest_framework import serializers
 from .models import *
+from halls_and_rooms.models import *
+from user_info.models import *
+from official.models import *
+from student_admission.models import *
 
 
 # =======================
@@ -26,13 +30,24 @@ class OfficialPersonSerializer(serializers.ModelSerializer):
         fields = ['email', 'official_role']
 
 # =======================
-# ADD OFFICE SERIALIZER
+# DiningShopCanteen SERIALIZER
 # =======================
-class AddOfficeSerializer(serializers.ModelSerializer):
+
+class DiningShopCanteenSerializer(serializers.ModelSerializer):
     hall = serializers.PrimaryKeyRelatedField(queryset=Hall.objects.all())
 
     class Meta:
-        model = AddOffice
+        model = Dining_Shop_Canteen
+        fields = ['id', 'email', 'name', 'official_role', 'hall']
+
+# =======================
+# ADD OFFICE SERIALIZER
+# =======================
+class OfficialRegistrationSerializer(serializers.ModelSerializer):
+    hall = serializers.PrimaryKeyRelatedField(queryset=Hall.objects.all())
+
+    class Meta:
+        model = OfficialRegistration
         fields = [
             'name', 'email', 'phone_number', 'password',
             'user_role', 'blood_group', 'hall',
@@ -53,41 +68,43 @@ class AddOfficeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         password = validated_data.pop('password', None)
 
-        # Create AddOffice instance
-        add_office_instance = AddOffice.objects.create(**validated_data)
+        # Create OfficialRegistration instance
+        official_registration_instance = OfficialRegistration.objects.create(**validated_data)
 
-        # Create UserInformation
+        # Create UserInformation instance
         user_data = {
-            'email': add_office_instance.email,
-            'name': add_office_instance.name,
-            'image': add_office_instance.profile_picture,
-            'phone_number': add_office_instance.phone_number,
-            'role': add_office_instance.user_role,
-            'blood_group': add_office_instance.blood_group,
-            'hall': add_office_instance.hall,
+            'email': official_registration_instance.email,
+            'name': official_registration_instance.name,
+            'image': official_registration_instance.profile_picture,
+            'phone_number': official_registration_instance.phone_number,
+            'role': official_registration_instance.user_role,
+            'blood_group': official_registration_instance.blood_group,
+            'hall': official_registration_instance.hall,
         }
         user = UserInformation(**user_data)
         if password:
             user.set_password(password)
         user.save()
 
-        # Handle role-specific creation
-        if add_office_instance.user_role == 'Provost_Body':
+        # Role-specific creation with hall included
+        if official_registration_instance.user_role == 'Provost_Body':
             ProvostBody.objects.create(
-                email=add_office_instance.email,
-                name=add_office_instance.name,
-                provost_body_role=add_office_instance.provost_body_role,
-                department=add_office_instance.department,
-                department_role=add_office_instance.department_role
+                email=official_registration_instance.email,
+                name=official_registration_instance.name,
+                provost_body_role=official_registration_instance.provost_body_role,
+                department=official_registration_instance.department,
+                department_role=official_registration_instance.department_role,
+                hall=official_registration_instance.hall  # <-- Add here
             )
-        elif add_office_instance.user_role == 'Official_Person':
+        elif official_registration_instance.user_role == 'Official_Person':
             OfficialPerson.objects.create(
-                email=add_office_instance.email,
-                name=add_office_instance.name,
-                official_role=add_office_instance.official_role
+                email=official_registration_instance.email,
+                name=official_registration_instance.name,
+                official_role=official_registration_instance.official_role,
+                hall=official_registration_instance.hall  # <-- Add here
             )
 
-        return add_office_instance
+        return official_registration_instance
 
 
     def update(self, instance, validated_data):

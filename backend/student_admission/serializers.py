@@ -73,3 +73,7 @@ class AdmissionSerializer(serializers.ModelSerializer):
         admission = Admission(**validated_data)
         admission.save()
         return admission
+
+
+
+

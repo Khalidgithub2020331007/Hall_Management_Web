@@ -5,7 +5,10 @@
 from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from registration.models import UserInformation
+from halls_and_rooms.models import *
+from user_info.models import *
+from official.models import *
+from student_admission.models import *
 from django.core.validators import RegexValidator
 
 class New_LostAndFound(models.Model):
