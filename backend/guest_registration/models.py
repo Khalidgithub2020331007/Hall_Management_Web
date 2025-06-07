@@ -4,8 +4,10 @@
 
 from django.db import models
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
-from registration.models import UserInformation,OfficialPerson,Hall
-
+from halls_and_rooms.models import *
+from user_info.models import *
+from official.models import *
+from student_admission.models import *
 
 class Guest(models.Model):
     guest_id = models.AutoField(primary_key=True)

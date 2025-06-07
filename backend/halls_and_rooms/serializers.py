@@ -21,9 +21,18 @@ class HallSerializer(serializers.ModelSerializer):
         return obj.total_number_of_seat - obj.admitted_students
 
     def get_room_list(self, obj):
-        return [room.room_number for room in obj.room_set.all()]
+        return [room.room_number for room in obj.rooms.all()]
 
-
+    def validate_hall_name(self, value):
+        # Perform case-insensitive uniqueness check
+        qs = Hall.objects.filter(hall_name__iexact=value)
+        if self.instance:  # If updating, exclude self
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise serializers.ValidationError("A hall with this name already exists.")
+        return value
+    
+    
 # =======================
 # ROOM SERIALIZER
 # =======================

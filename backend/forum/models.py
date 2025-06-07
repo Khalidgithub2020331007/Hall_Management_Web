@@ -5,8 +5,10 @@
 
 from django.core.exceptions import ValidationError
 from django.db import models
-from registration.models import UserInformation
-
+from halls_and_rooms.models import *
+from user_info.models import *
+from official.models import *
+from student_admission.models import *
 class New_Forum_Post(models.Model):
     post_id = models.AutoField(primary_key=True)
     user_email = models.ForeignKey(

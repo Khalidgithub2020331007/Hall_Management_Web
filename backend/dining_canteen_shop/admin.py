@@ -1,7 +1,9 @@
 from django.contrib import admin
 from .models import *
-from registration.models import *
-
+from halls_and_rooms.models import *
+from user_info.models import *
+from official.models import *
+from student_admission.models import *
 
 @admin.register(HallOutlet)
 class HallOutletAdmin(admin.ModelAdmin):

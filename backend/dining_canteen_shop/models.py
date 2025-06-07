@@ -4,7 +4,10 @@ from django.db.models import Avg
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
-from registration.models import *
+from halls_and_rooms.models import *
+from user_info.models import *
+from official.models import *
+from student_admission.models import *
 from choices import *
 
 

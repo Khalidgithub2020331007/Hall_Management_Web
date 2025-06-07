@@ -9,9 +9,11 @@ from django.db import models
 # =====================
 # HALL MODEL
 # =====================
+from django.core.exceptions import ValidationError
+
 class Hall(models.Model):
     hall_id = models.AutoField(primary_key=True)
-    hall_name = models.CharField(max_length=100)
+    hall_name = models.CharField(max_length=100,unique=True, help_text="Unique name for the hall")
     total_room = models.PositiveIntegerField()
     total_number_of_seat = models.PositiveIntegerField()
     admitted_students = models.PositiveIntegerField(default=0)
@@ -26,8 +28,17 @@ class Hall(models.Model):
         return self.total_number_of_seat - self.admitted_students
 
     def clean(self):
+        # Check admitted_students limit
         if self.admitted_students > self.total_number_of_seat:
             raise ValidationError("Admitted students cannot exceed total number of seats.")
+        
+        # Check for duplicate hall_name (case-insensitive)
+        qs = Hall.objects.filter(hall_name__iexact=self.hall_name)
+        # If updating existing record, exclude itself from check
+        if self.pk:
+            qs = qs.exclude(pk=self.pk)
+        if qs.exists():
+            raise ValidationError({"hall_name": "A hall with this name already exists."})
 
     def admit_student(self):
         if self.admitted_students >= self.total_number_of_seat:

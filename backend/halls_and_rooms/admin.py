@@ -1,5 +1,5 @@
 # =============================
-# Halls and Rooms MODEL
+# Halls and Rooms Admin
 # =============================
 from .models import *
 

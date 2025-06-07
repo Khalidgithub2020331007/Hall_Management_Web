@@ -13,4 +13,4 @@ router.register('room', RoomViewSet, basename='room')
 
 urlpatterns = [
     path('', include(router.urls)),   
-]
+]  
