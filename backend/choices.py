@@ -3,19 +3,12 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 # =====================
 # Role 
 # =====================
-# =========================
-# Role Choices
-# =========================
-# =========================
-# Role Choices
-# =========================
+
 USER_ROLE = [
     ('student', 'Student'),
     ('provost_body', 'Provost Body'),
     ('official_person', 'Official Person'),
-    ('dining', 'Dining'),
-    ('canteen', 'Canteen'),
-    ('shop', 'Shop'),
+    ('dining_shop_canteen', 'Dining/Shop/Canteen'),
 ]
 
 PROVOST_BODY_ROLE = [
@@ -37,14 +30,23 @@ OFFICE_PERSON_ROLE = [
     ('cleaner', 'Cleaner'),
     ('electrician', 'Electrician'),
     ('plumber', 'Plumber'),
-    ('swiper', 'Swiper'),
     ('gardener', 'Gardener'),
     ('office_assistant', 'Office Assistant'),
     ('office_attendant', 'Office Attendant'),
     ('guard', 'Guard'),
     ('senior_assistant', 'Senior Assistant'),
-    ('dining_shopping_canteen', 'Dining/Shopping/Canteen'),
+    ('dining', 'Dining'),
+    ('shop', 'Shop'),
+    ('canteen', 'Canteen'),
+    ('others', 'Others'),
 ]
+
+OUTLET_ROLE_CHOICES = [
+    ('dining', 'Dining'),
+    ('canteen', 'Canteen'),
+    ('shop', 'Shop'),
+]
+
 
 # =========================
 # Complaint Tags
@@ -86,6 +88,7 @@ SESSION_CHOICES = [
     ('2019', '2019-2020'),
     ('2020', '2020-2021'),
     ('2021', '2021-2022'),
+    ('2022', '2022-2023'),
     ('2023', '2023-2024'),
     ('2024', '2024-2025'),
 ]
@@ -106,4 +109,20 @@ STATUS_CHOICES = [
     ('received', 'Received'),
     ('in_process', 'In Process'),
     ('resolved', 'Resolved'),
+]
+BLOOD_GROUP_CHOICES = [
+    ('A+', 'A positive (A+)'),
+    ('A-', 'A negative (A-)'),
+    ('B+', 'B positive (B+)'),
+    ('B-', 'B negative (B-)'),
+    ('AB+', 'AB positive (AB+)'),
+    ('AB-', 'AB negative (AB-)'),
+    ('O+', 'O positive (O+)'),
+    ('O-', 'O negative (O-)'),
+    ('Others', 'Others'),
+]
+MEAL_TIME_CHOICES = [
+    ('breakfast', 'Breakfast'),
+    ('lunch', 'Lunch'),
+    ('dinner', 'Dinner'),
 ]

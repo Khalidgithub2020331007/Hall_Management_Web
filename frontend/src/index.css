@@ -1,19 +1,43 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+
+
+
 @theme {
+  
+
   --font-display: "Satoshi", "sans-serif";
   --breakpoint-3xl: 120rem;
 
-  /* Blue Colors (approximate) */
-  --color-primary-100: oklch(0.99 0 0); /* Very light/white */
-  --color-primary-200: oklch(0.98 0.04 270); /* Very pale primary */
-  --color-primary-300: oklch(0.94 0.11 270); /* Light primary */
-  --color-primary-400: oklch(0.92 0.19 270); /* Softer medium primary */
-  --color-primary-500: oklch(0.84 0.18 270); /* Mid-range primary */
-  --color-primary-600: oklch(0.53 0.12 270); /* Deep blue */
+  /* Primary (Sky Blue Focused) */
+  --color-primary: oklch(0.72 0.18 235);
+  --color-primary-focus: oklch(0.60 0.22 235);
+  --color-primary-content: oklch(0.25 0 0);
 
+  /* Secondary / Accent Blue */
+  --color-secondary: oklch(0.88 0.08 235);
+  --color-secondary-focus: oklch(0.82 0.12 235);
+  --color-secondary-content: oklch(0.25 0 0);
+
+  --color-accent: oklch(0.68 0.25 260);
+  --color-accent-focus: oklch(0.60 0.25 260);
+  --color-accent-content: oklch(0.98 0 0);
+
+  /* Base (Backgrounds & Surfaces) */
+  --color-base-background: oklch(0.98 0 0);
+  --color-base-surface: oklch(0.95 0 0);
+  --color-base-content: oklch(0.25 0 0);
+
+  /* Neutral / Text */
+  --color-neutral: oklch(0.45 0 0);
+  --color-neutral-content: oklch(0.98 0 0);
+
+  /* Transitions */
   --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
   --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
-  /* ... */
 }
+
+
+
+

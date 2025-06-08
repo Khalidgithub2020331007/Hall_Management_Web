@@ -1,3 +1,9 @@
+# ================================
+# backend/settings.py
+# =================================
+
+
+
 
 from pathlib import Path
 
@@ -26,11 +32,29 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'registration',
-    'corsheaders',
+
+    # Your apps
     'complain',
-    'rest_framework'
+    'dining_canteen_shop',
+    'events',
+    'forum',
+    'official_transaction',
+    'notice_board',
+    'lost_and_found',
+    'sport_equipment',
+    'guest_registration',
+    'meetings',
+    'student_admission',   # Newly added app
+    'halls_and_rooms',     # Newly added app
+    'user_info',           # Newly added app
+    'official',            # Newly added app
+
+    # 3rd-party apps
+    'corsheaders',
+    'rest_framework',
 ]
+
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -42,10 +66,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -103,11 +125,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Asia/Dhaka'  # ← change this from 'UTC'
 USE_I18N = True
-
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
