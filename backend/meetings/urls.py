@@ -9,3 +9,8 @@ router.register('topics', AddTopicViewSet)
 urlpatterns = [
     path('', include(router.urls)),
 ]
+
+
+
+# http://127.0.0.1:8000/meetings/addtopic/
+# http://127.0.0.1:8000/meetings/createmeeting/

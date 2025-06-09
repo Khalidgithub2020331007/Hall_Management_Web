@@ -14,3 +14,8 @@ router.register('room', RoomViewSet, basename='room')
 urlpatterns = [
     path('', include(router.urls)),   
 ]  
+
+
+
+# http://127.0.0.1:8000/halls_and_rooms/hall/
+# http://127.0.0.1:8000/halls_and_rooms/room/

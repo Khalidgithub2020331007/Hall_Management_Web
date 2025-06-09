@@ -5,6 +5,7 @@
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from choices import BLOCK_CHOICES
 
 # =====================
 # HALL MODEL
@@ -54,9 +55,11 @@ class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     room_number = models.CharField(max_length=10)
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE, related_name='rooms')
+    block = models.CharField(max_length=100, choices=BLOCK_CHOICES, default='A')
     capacity = models.PositiveIntegerField()
     admitted_students = models.PositiveIntegerField(default=0)
     student_list = models.JSONField(default=list, blank=True)
+
 
     def __str__(self):
         return f"Room {self.room_number} ({self.hall.hall_name})"

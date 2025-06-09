@@ -13,3 +13,7 @@ router.register(r'system_goal', SystemGoalViewSet, basename='system_goal')
 urlpatterns = [
     path('', include(router.urls)),
 ]
+
+
+# http://127.0.0.1:8000/complain/make_complaints/
+# http://127.0.0.1:8000/complain/systemgoal/

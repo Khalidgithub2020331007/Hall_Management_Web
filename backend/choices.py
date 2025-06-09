@@ -126,3 +126,9 @@ MEAL_TIME_CHOICES = [
     ('lunch', 'Lunch'),
     ('dinner', 'Dinner'),
 ]
+BLOCK_CHOICES = [
+    ('A', 'Block A'),
+    ('B', 'Block B'),
+    ('C', 'Block C'),           
+    ('D', 'Block D')
+]

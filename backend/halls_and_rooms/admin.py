@@ -37,7 +37,7 @@ class HallAdmin(admin.ModelAdmin):
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     list_display = (
-        'room_number', 'hall', 'capacity',
+        'room_number', 'hall','block', 'capacity',
         'admitted_students', 'vacancy_display', 'student_list'
     )
     search_fields = ['room_number', 'hall__hall_name']

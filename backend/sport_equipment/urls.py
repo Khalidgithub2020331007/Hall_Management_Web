@@ -13,3 +13,6 @@ router.register('sports_equipment', SportsEquipmentViewSet, basename='sports_equ
 urlpatterns = [
     path('', include(router.urls)),    # Include all router-generated routes
 ]  # End of urlpatterns
+
+
+# http://127.0.0.1:8000/sport_equipment/sportsequipment/

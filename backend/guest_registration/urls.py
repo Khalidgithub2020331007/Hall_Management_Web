@@ -18,3 +18,8 @@ router.register('guest', GuestViewSet, basename='guest')
 urlpatterns = [
     path('', include(router.urls)),    # Include all router-generated routes
 ]  # End of urlpatterns
+
+
+
+# http://127.0.0.1:8000/guest_registration/guest/
+

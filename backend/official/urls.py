@@ -18,3 +18,11 @@ router.register(r'dining-canteen-shop', DiningShopCanteenViewSet, basename='dini
 urlpatterns = [
     path('', include(router.urls)),  # REST framework routes
 ]
+
+
+
+# http://127.0.0.1:8000/official/officialregistration/
+# http://127.0.0.1:8000/official/dining_shop_canteen/
+# http://127.0.0.1:8000/official/officialperson/
+# http://127.0.0.1:8000/admin/official/provostbody/
+

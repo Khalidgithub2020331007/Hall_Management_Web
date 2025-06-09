@@ -117,6 +117,7 @@ class Student(models.Model):
     department = models.CharField(max_length=100, default='')
     semester = models.CharField(max_length=20)
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, blank=True)
+    
     session = models.CharField(max_length=10)
     hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
 
