@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const currentUserRole = "office"; // Change this to "student" or "dining" to test
+const currentUserRole = "office"; // "student" or "dining" to test
 
 const ManageNotices = () => {
   const [activeSection, setActiveSection] = useState("student");
@@ -19,7 +19,11 @@ const ManageNotices = () => {
     dining: [],
   });
 
-  const [formData, setFormData] = useState({ title: "", content: "", section: "student" });
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    section: "student",
+  });
 
   const handlePostNotice = (e) => {
     e.preventDefault();
@@ -37,7 +41,27 @@ const ManageNotices = () => {
       [formData.section]: [newNotice, ...prev[formData.section]],
     }));
 
-    setFormData({ title: "", content: "", section: "student" });
+    // Reset title and content, keep section as is
+    setFormData((prev) => ({
+      ...prev,
+      title: "",
+      content: "",
+      // section stays the same, so the form stays on the current tab
+    }));
+
+    // TODO: API call to post notice
+    /*
+    fetch('/api/notices', {
+      method: 'POST',
+      body: JSON.stringify(newNotice),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      // handle response
+    })
+    .catch(err => console.error(err));
+    */
   };
 
   const handleDelete = (section, id) => {
@@ -45,6 +69,16 @@ const ManageNotices = () => {
       ...prev,
       [section]: prev[section].filter((notice) => notice.id !== id),
     }));
+
+    // TODO: API call to delete notice
+    /*
+    fetch(`/api/notices/${id}`, { method: 'DELETE' })
+    .then(res => res.json())
+    .then(data => {
+      // handle response
+    })
+    .catch(err => console.error(err));
+    */
   };
 
   const renderNoticeList = (section) => {
@@ -74,8 +108,7 @@ const ManageNotices = () => {
   return (
     <div className="p-6 min-h-screen bg-gray-100">
       <div className="flex justify-between items-start mb-6 flex-wrap gap-4">
-
-{currentUserRole === "office" && (
+        {currentUserRole === "office" && (
           <form
             onSubmit={handlePostNotice}
             className="bg-white p-4 rounded shadow max-w-full flex flex-col gap-3 w-full md:w-[700px]"
@@ -85,7 +118,9 @@ const ManageNotices = () => {
                 <label className="text-sm font-medium">Section</label>
                 <select
                   value={formData.section}
-                  onChange={(e) => setFormData({ ...formData, section: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, section: e.target.value })
+                  }
                   className="border px-2 py-1 rounded"
                 >
                   <option value="student">Student</option>
@@ -97,7 +132,9 @@ const ManageNotices = () => {
                 <input
                   type="text"
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                   required
                   className="w-full border px-2 py-1 rounded"
                 />
@@ -107,7 +144,9 @@ const ManageNotices = () => {
               <label className="text-sm font-medium">Content</label>
               <textarea
                 value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, content: e.target.value })
+                }
                 required
                 rows={5}
                 className="w-full border px-3 py-2 rounded resize-y"
@@ -127,7 +166,10 @@ const ManageNotices = () => {
       {/* Tabs */}
       <div className="flex gap-4 mb-4">
         <button
-          onClick={() => setActiveSection("student")}
+          onClick={() => {
+            setActiveSection("student");
+            setFormData((prev) => ({ ...prev, section: "student" }));
+          }}
           className={`px-4 py-2 rounded ${
             activeSection === "student" ? "bg-blue-600 text-white" : "bg-white border"
           }`}
@@ -135,7 +177,10 @@ const ManageNotices = () => {
           Student
         </button>
         <button
-          onClick={() => setActiveSection("dining")}
+          onClick={() => {
+            setActiveSection("dining");
+            setFormData((prev) => ({ ...prev, section: "dining" }));
+          }}
           className={`px-4 py-2 rounded ${
             activeSection === "dining" ? "bg-green-600 text-white" : "bg-white border"
           }`}
