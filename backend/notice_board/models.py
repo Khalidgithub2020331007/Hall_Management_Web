@@ -6,7 +6,7 @@ from user_info.models import *
 from official.models import *
 from student_admission.models import *
 
-class NoticeBoard(models.Model):
+class Notices(models.Model):
     notice_id = models.AutoField(primary_key=True)
     notice_sender_email = models.ForeignKey(
         ProvostBody, on_delete=models.CASCADE, related_name='notices'

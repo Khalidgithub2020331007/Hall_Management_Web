@@ -113,7 +113,7 @@ class OfficialRegistration(models.Model):
     phone_number = models.CharField(
             validators=[phone_regex],
             max_length=14,
-            help_text="Enter 11-digit local or 14-digit international format (e.g., 018XXXXXXXX or +88018XXXXXXXX)"
+            help_text="Enter 11-digit local or 14-digit international format (e.g., 01XXXXXXXXX or +8801XXXXXXXXX)"
         )   
     password = models.CharField(max_length=100, editable=False)
     blood_group = models.CharField(max_length=100, choices=BLOOD_GROUP_CHOICES)

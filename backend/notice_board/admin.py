@@ -2,7 +2,7 @@
 from django.contrib import admin
 from .models import *
 
-@admin.register(NoticeBoard)
+@admin.register(Notices)
 class NoticeBoardAdmin(admin.ModelAdmin):
     list_display = (
         'notice_id',

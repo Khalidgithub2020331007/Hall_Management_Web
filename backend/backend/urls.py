@@ -19,6 +19,7 @@ urlpatterns = [
     path('guest_registration/', include('guest_registration.urls')),
     path('halls_and_rooms/', include('halls_and_rooms.urls')),
     path('lost_and_found/', include('lost_and_found.urls')),
+    path('notice_board/', include('notice_board.urls')),
     path('meetings/', include('meetings.urls')),
     path('official/', include('official.urls')),
     path('official_transaction/', include('official_transaction.urls')),

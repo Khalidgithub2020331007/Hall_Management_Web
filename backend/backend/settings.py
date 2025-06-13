@@ -20,7 +20,14 @@ SECRET_KEY = 'django-insecure-ocka8lq$qbnrbib5p5xhr*@zyqge#izd4=+uv+#74ex$i59qhj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+# Optional but helpful:
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
 
 
 # Application definition
@@ -39,15 +46,15 @@ INSTALLED_APPS = [
     'events',
     'forum',
     'official_transaction',
-    'notice_board',
     'lost_and_found',
-    'sport_equipment',
     'guest_registration',
     'meetings',
+    'notice_board',       # Already existing app
     'student_admission',   # Newly added app
     'halls_and_rooms',     # Newly added app
     'user_info',           # Newly added app
-    'official',            # Newly added app
+    'official',   
+    'sport_equipment',     # Newly added app
 
     # 3rd-party apps
     'corsheaders',
