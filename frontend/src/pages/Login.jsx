@@ -111,7 +111,7 @@ const Login = () => {
               the residential hall community. Secure and easy access for all
               authorized users.
             </p>
-            {/* <div className="hidden lg:block">
+            <div className="hidden lg:block">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
                   <svg
@@ -164,7 +164,7 @@ const Login = () => {
                   </p>
                 </div>
               </div>
-            </div> */}
+            </div>
           </div>
 
           {/* Right side - Login form */}
