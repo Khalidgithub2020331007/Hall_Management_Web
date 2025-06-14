@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const ApplyForm = () => {
   const specialclass1 = "text-black bg-white shadow-md";
+
   const [formData, setFormData] = useState({
     registration_number: "",
     name: "",
@@ -31,72 +32,91 @@ const ApplyForm = () => {
     convicted: false,
     profile_picture: null,
   });
+
   const [showSuccess, setShowSuccess] = useState(false);
   const [halls, setHalls] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/halls/") // replace with your actual endpoint
-      .then((res) => setHalls(res.data))
-      .catch((err) => console.error("Failed to fetch halls:", err));
-  }, []);
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/halls_and_rooms/hall/")
+      .then((res) => {
+        // Defensive: get res.data.results if paginated else res.data
+        const hallsData = Array.isArray(res.data.results) ? res.data.results : res.data;
+        setHalls(hallsData);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch halls:", err);
+        setHalls([]);
+      });
+  }, []);
+
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
-    const newValue =
-      type === "checkbox" ? checked : type === "file" ? files[0] : value;
-    setFormData({ ...formData, [name]: newValue });
+    let newValue;
+    if (type === "checkbox") {
+      newValue = checked;
+    } else if (type === "file") {
+      newValue = files.length > 0 ? files[0] : null;
+    } else {
+      newValue = value;
+    }
+    setFormData((prev) => ({ ...prev, [name]: newValue }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const data = new FormData();
+
+      // Append only non-null and non-empty values
       for (const key in formData) {
-        data.append(key, formData[key]);
+        const val = formData[key];
+        if (val !== null && val !== "" && val !== undefined) {
+          data.append(key, val);
+        }
       }
 
-      console.log("Submitted data:");
+      // Debugging: log all form data
       for (let pair of data.entries()) {
-        console.log(`${pair[0]}: ${pair[1]}`);
+        console.log(`${pair[0]}:`, pair[1]);
       }
+
       const res = await axios.post(
-        "http://127.0.0.1:8000/registration/application/",
+        "http://127.0.0.1:8000/student_admission/application/",
         data
+        // Do NOT set Content-Type header manually with FormData,
+        // Axios sets it automatically.
       );
 
       if (res.status === 201 || res.status === 200) {
         setShowSuccess(true);
         setTimeout(() => {
-          navigate("/"); // Redirect to login
+          navigate("/"); // Redirect after success
         }, 2000);
       } else {
         alert("Something went wrong. Please try again.");
       }
     } catch (err) {
-      console.error(err);
-      console.log("Error response:", err.response.data);
-      alert("Server error.");
+      console.error("Submission error:", err.response?.data || err.message);
+      alert("Server error. Please check console for details.");
     }
   };
 
   return (
-    <div className="bg-accent-500">
+    <div className="bg-accent-500 min-h-screen py-10">
       <div className="p-6 max-w-4xl mx-auto bg-sky-300 shadow-xl rounded-xl">
-        <h1 className="text-2xl font-bold mb-4 text-black">
-          Hall Seat Application Form
-        </h1>
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-        >
+        <h1 className="text-2xl font-bold mb-4 text-black">Hall Seat Application Form</h1>
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Basic Info */}
           <input
             name="registration_number"
             type="text"
             placeholder="Registration Number"
             className={"input input-bordered w-full " + specialclass1}
+            value={formData.registration_number}
             onChange={handleChange}
             required
           />
@@ -104,7 +124,8 @@ const ApplyForm = () => {
             name="name"
             type="text"
             placeholder="Full Name"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.name}
             onChange={handleChange}
             required
           />
@@ -112,7 +133,8 @@ const ApplyForm = () => {
             name="phone_number"
             type="text"
             placeholder="Phone Number"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.phone_number}
             onChange={handleChange}
             required
           />
@@ -120,7 +142,8 @@ const ApplyForm = () => {
             name="email"
             type="email"
             placeholder="Email"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.email}
             onChange={handleChange}
             required
           />
@@ -128,7 +151,8 @@ const ApplyForm = () => {
             name="blood_group"
             type="text"
             placeholder="Blood Group"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.blood_group}
             onChange={handleChange}
             required
           />
@@ -136,7 +160,8 @@ const ApplyForm = () => {
             name="father_name"
             type="text"
             placeholder="Father's Name"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.father_name}
             onChange={handleChange}
             required
           />
@@ -144,7 +169,8 @@ const ApplyForm = () => {
             name="mother_name"
             type="text"
             placeholder="Mother's Name"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.mother_name}
             onChange={handleChange}
             required
           />
@@ -152,7 +178,8 @@ const ApplyForm = () => {
           {/* Select fields */}
           <select
             name="gender"
-            className="select select-bordered w-full text-black bg-white shadow-md"
+            className={"select select-bordered w-full " + specialclass1}
+            value={formData.gender}
             onChange={handleChange}
             required
           >
@@ -165,14 +192,16 @@ const ApplyForm = () => {
             name="department_name"
             type="text"
             placeholder="Department Name"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.department_name}
             onChange={handleChange}
             required
           />
 
           <select
             name="study_program"
-            className="select select-bordered w-full text-black bg-white shadow-md"
+            className={"select select-bordered w-full " + specialclass1}
+            value={formData.study_program}
             onChange={handleChange}
             required
           >
@@ -183,7 +212,8 @@ const ApplyForm = () => {
 
           <select
             name="session"
-            className="select select-bordered w-full text-black bg-white shadow-md"
+            className={"select select-bordered w-full " + specialclass1}
+            value={formData.session}
             onChange={handleChange}
             required
           >
@@ -197,7 +227,8 @@ const ApplyForm = () => {
 
           <select
             name="semester"
-            className="select select-bordered w-full text-black bg-white shadow-md"
+            className={"select select-bordered w-full " + specialclass1}
+            value={formData.semester}
             onChange={handleChange}
             required
           >
@@ -219,7 +250,8 @@ const ApplyForm = () => {
           <textarea
             name="permanent_address"
             placeholder="Permanent Address"
-            className="textarea textarea-bordered w-full text-black bg-white shadow-md md:col-span-2"
+            className={"textarea textarea-bordered w-full " + specialclass1 + " md:col-span-2"}
+            value={formData.permanent_address}
             onChange={handleChange}
             required
           />
@@ -228,7 +260,8 @@ const ApplyForm = () => {
             type="number"
             step="0.1"
             placeholder="Distance from SUST (km)"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.home_distance_from_SUST_in_km}
             onChange={handleChange}
             required
           />
@@ -236,14 +269,16 @@ const ApplyForm = () => {
             name="family_monthly_income"
             type="number"
             placeholder="Family Monthly Income"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.family_monthly_income}
             onChange={handleChange}
             required
           />
           <textarea
             name="special_reason_for_hall_seat"
             placeholder="Special Reason (if any)"
-            className="textarea textarea-bordered w-full text-black bg-white shadow-md md:col-span-2"
+            className={"textarea textarea-bordered w-full " + specialclass1 + " md:col-span-2"}
+            value={formData.special_reason_for_hall_seat}
             onChange={handleChange}
           />
 
@@ -253,7 +288,8 @@ const ApplyForm = () => {
             type="number"
             step="0.1"
             placeholder="Total Credits Offered"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.total_credits_offered}
             onChange={handleChange}
             required
           />
@@ -262,7 +298,8 @@ const ApplyForm = () => {
             type="number"
             step="0.1"
             placeholder="Total Credits Completed"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.total_credits_completed}
             onChange={handleChange}
             required
           />
@@ -271,7 +308,8 @@ const ApplyForm = () => {
             type="number"
             step="0.01"
             placeholder="CGPA"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.cgpa}
             onChange={handleChange}
             required
           />
@@ -280,86 +318,84 @@ const ApplyForm = () => {
             type="number"
             step="0.01"
             placeholder="Last Semester GPA"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className={"input input-bordered w-full " + specialclass1}
+            value={formData.last_semester_gpa}
             onChange={handleChange}
             required
           />
 
-          {/* Hall and Residency */}
+          {/* Hall Selection */}
           <select
             name="attached_hall"
+            className={"select select-bordered w-full " + specialclass1}
             value={formData.attached_hall}
             onChange={handleChange}
-            className="select select-bordered w-full text-black bg-white shadow-md"
+            required
           >
-            <option value="">Select Hall (optional)</option>
-            {halls.map((hall) => (
-              <option key={hall.id} value={hall.id}>
-                {hall.name}
-              </option>
-            ))}
+            <option value="">Select Hall</option>
+            {Array.isArray(halls) &&
+              halls.map((hall) => (
+                <option key={hall.hall_id} value={hall.hall_id}>
+                  {hall.hall_name}
+                </option>
+              ))}
           </select>
 
-          <label className="label cursor-pointer">
-            <span className="label-text text-black">Currently Resident?</span>
+          {/* Checkbox inputs */}
+          <label className="flex items-center space-x-2">
             <input
+              type="checkbox"
               name="is_resident"
-              type="checkbox"
-              className="checkbox ml-2 text-black bg-white shadow-md"
+              checked={formData.is_resident}
               onChange={handleChange}
+              className="checkbox checkbox-primary"
             />
+            <span>Currently Resident in University Hall</span>
           </label>
-          <input
-            name="resident_months_in_university_hall"
-            type="number"
-            placeholder="Resident Months"
-            className="input input-bordered w-full text-black bg-white shadow-md"
-            onChange={handleChange}
-          />
 
-          {/* Others */}
-          <label className="label cursor-pointer">
-            <span className="label-text text-black ">
-              Penalized by University?
-            </span>
+          {formData.is_resident && (
             <input
+              name="resident_months_in_university_hall"
+              type="number"
+              placeholder="Months as Resident"
+              className={"input input-bordered w-full " + specialclass1}
+              value={formData.resident_months_in_university_hall}
+              onChange={handleChange}
+              min={0}
+            />
+          )}
+
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
               name="convicted"
-              type="checkbox"
-              className="checkbox ml-2 text-black bg-white shadow-md"
+              checked={formData.convicted}
               onChange={handleChange}
+              className="checkbox checkbox-primary"
             />
+            <span>Have you been convicted?</span>
           </label>
 
-          <label className="label cursor-pointer">
-            <span className="label-text text-black">Choose your image:</span>
+          <label className="block w-full">
+            Profile Picture:
             <input
-              name="profile_picture"
               type="file"
+              name="profile_picture"
               accept="image/*"
-              className="file-input file-input-bordered w-full text-black bg-white shadow-md"
               onChange={handleChange}
+              className="file-input file-input-bordered file-input-primary w-full"
             />
           </label>
 
-          <button
-            type="submit"
-            className="btn btn-primary w-full md:col-span-2 mt-4"
-          >
+          <button type="submit" className="btn btn-primary w-full md:col-span-2">
             Submit Application
           </button>
         </form>
 
-        {/* Success Modal */}
         {showSuccess && (
-          <dialog open className="modal modal-open">
-            <div className="modal-box">
-              <h3 className="font-bold text-lg">Application Submitted!</h3>
-              <p className="py-4">
-                Your hall seat application has been submitted successfully.
-                Redirecting to login...
-              </p>
-            </div>
-          </dialog>
+          <div className="alert alert-success mt-4">
+            Application submitted successfully! Redirecting...
+          </div>
         )}
       </div>
     </div>

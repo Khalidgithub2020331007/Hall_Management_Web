@@ -18,5 +18,5 @@ urlpatterns = [
 
 
 
-# http://127.0.0.1:8000/lost_and_found/new_lostandfound/
 
+# http://127.0.0.1:8000/lost_and_found/new_lost_and_found/

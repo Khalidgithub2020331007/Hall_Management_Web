@@ -17,7 +17,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
         fields = [
             'registration_number', 'name', 'phone_number', 'email', 'blood_group',
             'father_name', 'mother_name', 'gender', 'department_name',
-            'study_program', 'session', 'semester', 'premanent_address',
+            'study_program', 'session', 'semester', 'permanent_address',
             'home_distance_from_SUST_in_km', 'family_monthly_income',
             'special_reason_for_hall_seat', 'total_credits_offered', 'total_credits_completed',
             'cgpa', 'last_semester_gpa', 'attached_hall', 'is_resident',
@@ -38,7 +38,7 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = [
             'registration_number', 'email',
-            'department', 'semester', 'room_number', 'session'
+            'department', 'semester', 'room', 'session'
         ]
 
 
@@ -48,15 +48,15 @@ class StudentSerializer(serializers.ModelSerializer):
 # =======================
 class AdmissionSerializer(serializers.ModelSerializer):
     registration_number = serializers.PrimaryKeyRelatedField(queryset=Application.objects.all())
-    room_number = serializers.PrimaryKeyRelatedField(queryset=Room.objects.all())
+    room = serializers.PrimaryKeyRelatedField(queryset=Room.objects.all())
     hall = serializers.PrimaryKeyRelatedField(queryset=Hall.objects.all())
 
     class Meta:
         model = Admission
-        fields = ['registration_number', 'password', 'room_number', 'hall']
+        fields = ['registration_number', 'password', 'room', 'hall']
 
     def validate(self, attrs):
-        room = attrs.get('room_number')
+        room = attrs.get('room')
         hall = attrs.get('hall')
         if room.admitted_students >= room.capacity:
             raise serializers.ValidationError("This room is already full.")

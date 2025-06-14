@@ -84,7 +84,7 @@ class Application(models.Model):
             self.resident_months_in_university_hall = 0
     
         # Credits validation
-        if self.total_credits_offered <= self.total_credits_completed:
+        if self.total_credits_offered < self.total_credits_completed:
             raise ValidationError({
                 'total_credits_offered': 'Total credits offered must be greater than total credits completed.',
                 'total_credits_completed': 'Total credits completed must be less than total credits offered.'

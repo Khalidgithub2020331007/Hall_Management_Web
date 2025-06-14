@@ -17,7 +17,6 @@ urlpatterns = [
 ]
 
 
-# http://127.0.0.1:8000/dining_canteen_shop/additem/
-# http://127.0.0.1:8000/dining_canteen_shop/feedback/
-# http://127.0.0.1:8000/dining_canteen_shop/halloutlet/
-# 
+# http://127.0.0.1:8000/dining_canteen_shop/items/
+# http://127.0.0.1:8000/dining_canteen_shop/feedbacks/
+# http://127.0.0.1:8000/dining_canteen_shop/hall-outlets/

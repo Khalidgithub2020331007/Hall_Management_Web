@@ -18,4 +18,4 @@ urlpatterns = [
 
 # http://127.0.0.1:8000/student_admission/admission/
 # http://127.0.0.1:8000/student_admission/application/
-# http://127.0.0.1:8000/student_admission/
+# http://127.0.0.1:8000/student_admission/student/
