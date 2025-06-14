@@ -68,7 +68,7 @@ class RoomSerializer(serializers.ModelSerializer):
 
 
     def get_student_list(self, obj):
-        return [student.registration_number for student in obj.student_set.order_by('registration_number')]
+        return obj.student_list
     
 
     def get_vacancy(self, obj):

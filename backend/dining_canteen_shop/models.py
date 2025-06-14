@@ -41,7 +41,8 @@ class HallOutlet(models.Model):
     is_active = models.BooleanField(default=True)
 
     def clean(self):
-        role = getattr(self.owner, 'role', None)
+        role = getattr(self.owner, 'official_role', '').lower()
+
 
         # Dining or Canteen must fill meal times
         if role in ['dining', 'canteen']:
@@ -83,19 +84,20 @@ class AddItem(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2,validators=[MinValueValidator(0)])
 
     def clean(self):
-        role = self.owner.role.lower()
+        role = getattr(self.owner, 'official_role', '').lower()
         if role in ['dining', 'canteen'] and not self.meal_time:
             raise ValidationError("Meal time is required for dining or canteen owners.")
         elif role == 'shop':
             self.meal_time = None  # clear it just in case
 
     def save(self, *args, **kwargs):
-        self.full_clean()  # calls clean()
+        self.full_clean()
 
-        super().save(*args, **kwargs)  # save item first
+        super().save(*args, **kwargs)
 
         # Add item to HallOutlet JSONField
-        role = self.owner.role.lower()
+        role = getattr(self.owner, 'official_role', '').lower()  # ✅ Use official_role safely
+
         if role in ['dining', 'canteen'] and self.meal_time:
             with contextlib.suppress(HallOutlet.DoesNotExist):
                 outlet = HallOutlet.objects.get(owner=self.owner)
@@ -109,6 +111,7 @@ class AddItem(models.Model):
                     current_items.append({'item': self.item, 'price': float(self.price)})
                     setattr(outlet, field_name, current_items)
                     outlet.save()
+
 
     def __str__(self):
         return f"{self.item} - {self.meal_time or 'N/A'} - {self.owner.name}"

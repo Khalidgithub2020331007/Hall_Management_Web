@@ -22,7 +22,7 @@ class UserInformationSerializer(serializers.ModelSerializer):
         model = UserInformation
         fields = [
             'id', 'email', 'name', 'image',
-            'phone_number', 'password', 'role',
+            'phone_number', 'password', 'user_role',
             'blood_group', 'hall'
         ]
         extra_kwargs = {

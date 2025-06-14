@@ -1,3 +1,8 @@
+# =====================
+# Meetings  urls.py
+# =====================
+
+
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import CreateMeetingViewSet, AddTopicViewSet
@@ -12,5 +17,5 @@ urlpatterns = [
 
 
 
-# http://127.0.0.1:8000/meetings/addtopic/
-# http://127.0.0.1:8000/meetings/createmeeting/
+# http://127.0.0.1:8000/meetings/topics/
+# http://127.0.0.1:8000/meetings/meetings/

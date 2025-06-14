@@ -1,9 +1,18 @@
+# =====================
+# Meetings seralizers.py
+# =====================
+
+
 from rest_framework import serializers
 from .models import CreateMeeting, AddTopic
 from halls_and_rooms.models import *
 from user_info.models import *
 from official.models import *
 from student_admission.models import *
+from rest_framework import serializers
+from .models import AddTopic
+from django.utils import timezone
+from meetings.models import CreateMeeting
 
 class CreateMeetingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,15 +26,20 @@ class CreateMeetingSerializer(serializers.ModelSerializer):
         return value
 
 
+
+
 class AddTopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddTopic
-        fields = '__all__'
+        fields = ['id', 'topic_text', 'meeting']
 
     def validate(self, data):
-        from django.utils import timezone
-        meeting_time = data['meeting_date_time'].meeting_date_time
-        if meeting_time < timezone.now():
+        meeting_instance = data.get('meeting')
+
+        if not meeting_instance:
+            raise serializers.ValidationError("Meeting is required.")
+
+        if meeting_instance.meeting_date_time < timezone.now():
             raise serializers.ValidationError("Cannot add topic to past meetings.")
-# <<<<<<< HEAD
+
         return data

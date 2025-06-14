@@ -1,8 +1,10 @@
+# =====================
+# choices.py
+# =====================
+
 from django.db import models, transaction
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
-# =====================
-# Role 
-# =====================
+
 
 USER_ROLE = [
     ('student', 'Student'),
@@ -130,5 +132,11 @@ BLOCK_CHOICES = [
     ('A', 'Block A'),
     ('B', 'Block B'),
     ('C', 'Block C'),           
-    ('D', 'Block D')
+    ('D', 'Block D'),
+    ('None', 'None'),
+]
+
+LOST_FOUND_CHOICES = [
+    ('lost', 'Lost'),
+    ('found', 'Found'),
 ]

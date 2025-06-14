@@ -1,117 +1,97 @@
 import { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import { format } from "date-fns";
 
 const currentUser = {
   name: "John Doe",
-  designation: "provost", // Change this to 'dining_manager' to test different roles
+  designation: "provost", // Change to test roles
 };
-
-const dummyMeetings = [
-  {
-    id: 1,
-    title: "Dining Budget Review",
-    description: "Discuss this month's expenses.",
-    date: "2025-06-07T10:00",
-    attendees: ["assistant provost"],
-    outcome: "",
-    host: "John Doe",
-  },
-  {
-    id: 2,
-    title: "Room Allocation Planning",
-    description: "Talk about new batch arrangements.",
-    date: "2025-06-06T15:00",
-    attendees: ["computer operator"],
-    outcome: "Decided to allocate rooms in block C.",
-    host: "Alice",
-  },
-];
 
 const Meetings = () => {
   const [meetings, setMeetings] = useState([]);
+  const [topics, setTopics] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [newTopicTexts, setNewTopicTexts] = useState({});
+  const [showTopicInputs, setShowTopicInputs] = useState({});
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    date: "",
-    attendees: [],
+    meeting_date_time: "",
+    meeting_members: "",
+    meeting_description: "",
+    meeting_decision: "",
+    meeting_minutes: "",
+    next_meeting_date_time: "",
   });
-  const [editingOutcomeId, setEditingOutcomeId] = useState(null);
-  const [editedOutcome, setEditedOutcome] = useState("");
 
   const fetchMeetings = async () => {
     try {
-      // const res = await axios.get("/api/meetings");
-      // setMeetings(res.data);
-      setMeetings(dummyMeetings); // hardcoded for UI
+      const [meetingsRes, topicsRes] = await Promise.all([
+        axios.get("http://127.0.0.1:8000/meetings/meetings/"),
+        axios.get("http://127.0.0.1:8000/meetings/topics/"),
+      ]);
+      setMeetings(meetingsRes.data.results || []);
+      setTopics(topicsRes.data.results || []);
     } catch (err) {
-      console.error("Failed to fetch meetings", err);
+      console.error("Failed to fetch meetings or topics", err);
     }
   };
-
-  const handleCreateMeeting = async (e) => {
-    e.preventDefault();
-    const newMeeting = { ...formData, host: currentUser.name, outcome: "" };
-
-    try {
-      // await axios.post("/api/meetings", newMeeting);
-      setMeetings([...meetings, { ...newMeeting, id: Date.now() }]);
-      setFormData({ title: "", description: "", date: "", attendees: [] });
-      setShowForm(false);
-    } catch (err) {
-      console.error("Failed to create meeting", err);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      // await axios.delete(`/api/meetings/${id}`);
-      setMeetings(meetings.filter((m) => m.id !== id));
-    } catch (err) {
-      console.error("Failed to delete meeting", err);
-    }
-  };
-
-  const handleOutcomeUpdate = async (id, newOutcome) => {
-    try {
-      // await axios.put(`/api/meetings/${id}/`, { outcome: newOutcome });
-      setMeetings(
-        meetings.map((m) => (m.id === id ? { ...m, outcome: newOutcome } : m))
-      );
-    } catch (err) {
-      console.error("Failed to update outcome", err);
-    }
-  };
-
-  const isUpcoming = (dateStr) => new Date(dateStr) > new Date();
 
   useEffect(() => {
     fetchMeetings();
   }, []);
 
-  const filteredMeetings = meetings.filter((m) => {
-    const meetingDate = new Date(m.date);
-    const today = new Date();
-    const yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
-    const eightDaysAgo = new Date();
-    eightDaysAgo.setDate(today.getDate() - 8);
+  const handleCreateMeeting = async (e) => {
+    e.preventDefault();
+    const newMeeting = {
+      ...formData,
+      meeting_chairperson: 2, // Replace with actual user logic
+    };
 
-    if (currentUser.designation === "dining_manager") {
-      return (
-        meetingDate.toDateString() === today.toDateString() ||
-        meetingDate.toDateString() === yesterday.toDateString()
-      );
-    } else {
-      return meetingDate >= eightDaysAgo;
+    try {
+      await axios.post("http://127.0.0.1:8000/meetings/meetings/", newMeeting);
+      setFormData({
+        meeting_date_time: "",
+        meeting_members: "",
+        meeting_description: "",
+        meeting_decision: "",
+        meeting_minutes: "",
+        next_meeting_date_time: "",
+      });
+      setShowForm(false);
+      fetchMeetings();
+    } catch (err) {
+      console.error("Failed to create meeting", err);
     }
-  });
+  };
 
-  const upcomingMeetings = filteredMeetings.filter((m) => isUpcoming(m.date));
-  const pastMeetings = filteredMeetings
-    .filter((m) => !isUpcoming(m.date))
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const handleAddTopicClick = (meetingId) => {
+    setShowTopicInputs((prev) => ({ ...prev, [meetingId]: true }));
+  };
+
+  const handleTopicChange = (meetingId, value) => {
+    setNewTopicTexts((prev) => ({ ...prev, [meetingId]: value }));
+  };
+
+  const handleSaveTopic = async (meetingId) => {
+    const topicText = newTopicTexts[meetingId];
+    if (!topicText || topicText.trim() === "") {
+      alert("Topic text cannot be empty.");
+      return;
+    }
+
+    try {
+      await axios.post("http://127.0.0.1:8000/meetings/topics/", {
+        meeting: meetingId,
+        topic_text: topicText.trim(),
+      });
+      alert("Topic added successfully.");
+      setNewTopicTexts((prev) => ({ ...prev, [meetingId]: "" }));
+      setShowTopicInputs((prev) => ({ ...prev, [meetingId]: false }));
+      fetchMeetings(); // Refresh list
+    } catch (error) {
+      console.error("Error adding topic:", error);
+      alert("Failed to add topic.");
+    }
+  };
 
   return (
     <div className="p-4">
@@ -128,73 +108,70 @@ const Meetings = () => {
           className="card bg-amber-200 p-4 shadow-md space-y-4 mb-6"
         >
           <input
-            name="title"
-            placeholder="Meeting Title"
-            className="input input-bordered w-full"
-            value={formData.title}
+            type="datetime-local"
+            name="meeting_date_time"
+            className="input input-bordered w-full bg-white"
+            value={formData.meeting_date_time}
             onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
-            required
-          />
-          <textarea
-            name="description"
-            placeholder="Meeting Description"
-            className="textarea textarea-bordered w-full"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
+              setFormData({ ...formData, meeting_date_time: e.target.value })
             }
             required
           />
           <input
-            type="datetime-local"
-            name="date"
-            className="input input-bordered w-full"
-            value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            type="text"
+            name="meeting_members"
+            className="input input-bordered w-full bg-white"
+            placeholder="Meeting Members"
+            value={formData.meeting_members}
+            onChange={(e) =>
+              setFormData({ ...formData, meeting_members: e.target.value })
+            }
             required
           />
-          <div className="dropdown">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-outline w-full justify-start"
-            >
-              {formData.attendees.length > 0
-                ? formData.attendees.join(", ")
-                : "Select Attendees"}
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full"
-            >
-              {["provost", "assistant provost", "computer operator", "all"].map(
-                (role) => (
-                  <li key={role}>
-                    <label className="label cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="checkbox checkbox-sm mr-2"
-                        checked={formData.attendees.includes(role)}
-                        onChange={() => {
-                          const newAttendees = formData.attendees.includes(role)
-                            ? formData.attendees.filter((r) => r !== role)
-                            : [...formData.attendees, role];
-                          setFormData({ ...formData, attendees: newAttendees });
-                        }}
-                      />
-                      <span className="label-text capitalize">{role}</span>
-                    </label>
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
+          <textarea
+            name="meeting_description"
+            className="textarea textarea-bordered w-full bg-white"
+            placeholder="Description"
+            value={formData.meeting_description}
+            onChange={(e) =>
+              setFormData({ ...formData, meeting_description: e.target.value })
+            }
+            required
+          />
+          <textarea
+            name="meeting_decision"
+            className="textarea textarea-bordered w-full bg-white"
+            placeholder="Decision"
+            value={formData.meeting_decision}
+            onChange={(e) =>
+              setFormData({ ...formData, meeting_decision: e.target.value })
+            }
+          />
+          <textarea
+            name="meeting_minutes"
+            className="textarea textarea-bordered w-full bg-white"
+            placeholder="Minutes"
+            value={formData.meeting_minutes}
+            onChange={(e) =>
+              setFormData({ ...formData, meeting_minutes: e.target.value })
+            }
+          />
+          <input
+            type="datetime-local"
+            name="next_meeting_date_time"
+            className="input input-bordered w-full bg-white"
+            value={formData.next_meeting_date_time}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                next_meeting_date_time: e.target.value,
+              })
+            }
+          />
 
           <div className="flex">
             <button className="btn btn-primary" type="submit">
-              Schedule
+              Save
             </button>
             <button
               type="button"
@@ -202,10 +179,12 @@ const Meetings = () => {
               onClick={() => {
                 setShowForm(false);
                 setFormData({
-                  title: "",
-                  description: "",
-                  date: "",
-                  attendees: [],
+                  meeting_date_time: "",
+                  meeting_members: "",
+                  meeting_description: "",
+                  meeting_decision: "",
+                  meeting_minutes: "",
+                  next_meeting_date_time: "",
                 });
               }}
             >
@@ -216,106 +195,69 @@ const Meetings = () => {
       )}
 
       <div>
-        <h3 className="text-xl font-semibold mb-2">Upcoming Meetings</h3>
-        {upcomingMeetings.length > 0 ? (
-          <div className="grid gap-4 mb-6">
-            {upcomingMeetings.map((m) => (
-              <div key={m.id} className="card bg-amber-200 shadow p-4">
-                <h4 className="text-lg font-bold">{m.title}</h4>
-                <p>{m.description}</p>
-                <p className="text-sm text-gray-500">
-                  Date: {format(new Date(m.date), "PPpp")}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Attendees: {m.attendees.join(", ")}
-                </p>
-                <p className="text-sm text-gray-500">Host: {m.host}</p>
-                {m.host === currentUser.name && (
-                  <button
-                    className="btn btn-sm btn-error mt-2"
-                    onClick={() => handleDelete(m.id)}
-                  >
-                    Delete
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
+        <h3 className="text-xl font-semibold mb-2">Meetings List</h3>
+        {meetings.length === 0 ? (
+          <p>No meetings available.</p>
         ) : (
-          <p>No upcoming meetings</p>
-        )}
-      </div>
-
-      <div>
-        <h3 className="text-xl font-semibold mb-2">Past 7 Days</h3>
-        {pastMeetings.length > 0 ? (
           <div className="grid gap-4">
-            {pastMeetings.map((m) => (
-              <div key={m.id} className="card bg-amber-200 shadow p-4">
-                <h4 className="text-lg font-bold">{m.title}</h4>
-                <p>{m.description}</p>
-                <p className="text-sm text-gray-500">
-                  Date: {format(new Date(m.date), "PPpp")}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Attendees: {m.attendees.join(", ")}
-                </p>
-                <p className="text-sm text-gray-500">Host: {m.host}</p>
+            {meetings.map((meeting) => {
+              const meetingTopics = topics.filter(
+                (t) => t.meeting === meeting.meeting_id
+              );
 
-                <div className="mt-2">
-                  <p className="font-semibold">Outcome:</p>
-                  {m.outcome && <p>{m.outcome}</p>}
+              return (
+                <div key={meeting.meeting_id} className="card bg-amber-200 p-4 shadow">
+                  <h4 className="text-lg font-bold">
+                    {format(new Date(meeting.meeting_date_time), "PPpp")}
+                  </h4>
+                  <p><strong>Members:</strong> {meeting.meeting_members}</p>
+                  <p><strong>Description:</strong> {meeting.meeting_description}</p>
+                  <p><strong>Decision:</strong> {meeting.meeting_decision}</p>
+                  <p><strong>Minutes:</strong> {meeting.meeting_minutes}</p>
+                  <p><strong>Next Meeting:</strong> {format(new Date(meeting.next_meeting_date_time), "PPpp")}</p>
 
-                  {m.host === currentUser.name && (
-                    <div className="mt-2 space-y-2">
-                      {editingOutcomeId === m.id ? (
-                        <>
-                          <textarea
-                            className="textarea textarea-bordered w-full"
-                            value={editedOutcome}
-                            onChange={(e) => setEditedOutcome(e.target.value)}
-                          />
-                          <div className="flex gap-2">
-                            <button
-                              className="btn btn-success btn-sm"
-                              onClick={() => {
-                                handleOutcomeUpdate(m.id, editedOutcome);
-                                setEditingOutcomeId(null);
-                                setEditedOutcome("");
-                              }}
-                            >
-                              Save
-                            </button>
-                            <button
-                              className="btn btn-outline btn-sm"
-                              onClick={() => {
-                                setEditingOutcomeId(null);
-                                setEditedOutcome("");
-                              }}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </>
-                      ) : (
-                        <button
-                          className="btn btn-sm btn-outline"
-                          onClick={() => {
-                            setEditingOutcomeId(m.id);
-                            setEditedOutcome(m.outcome);
-                          }}
-                        >
-                          {m.outcome ? "Edit Outcome" : "Add Outcome"}
-                        </button>
-                      )}
+                  {meetingTopics.length > 0 && (
+                    <div>
+                      <strong>Topics:</strong>
+                      <ul className="list-disc pl-5">
+                        {meetingTopics.map((topic) => (
+                          <li key={topic.id}>{topic.topic_text}</li>
+                        ))}
+                      </ul>
                     </div>
                   )}
+
+                  {/* Add Topic Feature */}
+                  {showTopicInputs[meeting.meeting_id] ? (
+                    <div className="mt-2 flex gap-2">
+                      <input
+                        type="text"
+                        value={newTopicTexts[meeting.meeting_id] || ""}
+                        onChange={(e) =>
+                          handleTopicChange(meeting.meeting_id, e.target.value)
+                        }
+                        placeholder="Enter topic"
+                        className="input input-bordered w-full bg-white"
+                      />
+                      <button
+                        onClick={() => handleSaveTopic(meeting.meeting_id)}
+                        className="btn btn-success"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleAddTopicClick(meeting.meeting_id)}
+                      className="btn btn-info mt-2"
+                    >
+                      Add Topic
+                    </button>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-        ) : (
-          <p>No past meetings</p>
         )}
       </div>
     </div>

@@ -33,3 +33,9 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn
+
+
+*/migrations/*.py
+!*/migrations/__init__.py
+.env
+.env.*

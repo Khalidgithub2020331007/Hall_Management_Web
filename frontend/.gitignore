@@ -1,24 +1,35 @@
-# Logs
-logs
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment
+django_env/
+venv/
+env/
+ENV/
+
+# Django stuff
 *.log
+*.pot
+*.mo
+*.db
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+
+# IDE/editor files
+*.swp
+*.swo
+*.bak
+*.orig
+*.DS_Store
+.idea/
+.vscode/
+
+# Node.js (frontend) dependencies
+node_modules/
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+yarn

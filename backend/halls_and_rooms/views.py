@@ -1,8 +1,8 @@
 # =====================
 # Halls and Rooms View
 # =====================
-from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework import filters
 from .models import *
 from .serializers import * 
 
@@ -21,6 +21,17 @@ class HallViewSet(viewsets.ModelViewSet):
 # =====================
 # Room ViewSet
 # =====================
+from rest_framework import filters
+
 class RoomViewSet(viewsets.ModelViewSet):
-    queryset = Room.objects.all()
     serializer_class = RoomSerializer
+    queryset = Room.objects.all()
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['room_number']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        hall_name = self.request.query_params.get('hall')
+        if hall_name:
+            queryset = queryset.filter(hall__hall_name=hall_name)
+        return queryset

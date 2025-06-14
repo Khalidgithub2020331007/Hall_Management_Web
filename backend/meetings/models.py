@@ -1,3 +1,8 @@
+# =====================
+# Meetings models.py
+# =====================
+
+
 from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.utils import timezone
@@ -73,4 +78,3 @@ class AddTopic(models.Model):
     def __str__(self):
 
         return f"Topic: {self.topic_text} (Meeting ID: {self.meeting.meeting_id})"
-# >>>>>>> develop_khalid

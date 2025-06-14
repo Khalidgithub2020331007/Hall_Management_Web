@@ -1,70 +1,17 @@
 import React, { useState, useEffect } from "react";
-
-const hardcodedApplications = [
-  {
-    registration_number: "2023001",
-    name: "Fuad Alamin",
-    phone_number: "01710000000",
-    email: "fuad@example.com",
-    department_name: "CSE",
-    study_program: "Undergraduate",
-    session: "2019-20",
-    semester: "8th",
-    permanent_address: "Sylhet Sadar",
-    home_distance_from_SUST_in_km: 15.3,
-    family_monthly_income: 25000,
-    special_reason_for_hall_seat:
-      "Financial issues due to family hardship and long distance from campus making it hard to commute daily.",
-    total_credits_offered: 120,
-    total_credits_completed: 100,
-    cgpa: 3.75,
-    last_semester_gpa: 3.9,
-  },
-  {
-    registration_number: "2023002",
-    name: "Nahid Hossain",
-    phone_number: "01711111111",
-    email: "nahid@example.com",
-    department_name: "CSE",
-    study_program: "Undergraduate",
-    session: "2019-20",
-    semester: "8th",
-    permanent_address: "Sunamganj",
-    home_distance_from_SUST_in_km: 50,
-    family_monthly_income: 18000,
-    special_reason_for_hall_seat:
-      "Lives far from campus with no nearby housing options.",
-    total_credits_offered: 120,
-    total_credits_completed: 110,
-    cgpa: 3.82,
-    last_semester_gpa: 3.95,
-  },
-  {
-    registration_number: "2023003",
-    name: "Sarah Akter",
-    phone_number: "01812223344",
-    email: "sarah@example.com",
-    department_name: "EEE",
-    study_program: "Undergraduate",
-    session: "2020-21",
-    semester: "6th",
-    permanent_address: "Moulvibazar",
-    home_distance_from_SUST_in_km: 35,
-    family_monthly_income: 30000,
-    special_reason_for_hall_seat: "",
-    total_credits_offered: 90,
-    total_credits_completed: 80,
-    cgpa: 3.76,
-    last_semester_gpa: 3.94,
-  },
-];
+import axios from "axios";
 
 const truncateText = (text, limit = 6) => {
-  if (!text || text.split(" ").length <= limit) return text;
+  if (!text) return "";
+  if (text.split(" ").length <= limit) return text;
   return text.split(" ").slice(0, limit).join(" ") + "...";
 };
 
 const HallApplicants = () => {
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [sortBy, setSortBy] = useState("");
   const [selectedReason, setSelectedReason] = useState("");
   const [selectedApplicant, setSelectedApplicant] = useState(null);
@@ -73,73 +20,150 @@ const HallApplicants = () => {
   const [roomDialogOpen, setRoomDialogOpen] = useState(false);
   const [allocatedSeats, setAllocatedSeats] = useState({});
 
-  const halls = ["Shahidul Hall", "TSC Hall"];
-  const rooms = {
-    "Shahidul Hall": ["101", "102"],
-    "TSC Hall": ["201", "202"],
-  };
+  const [halls, setHalls] = useState([]);
+  const [rooms, setRooms] = useState([]);
 
-  const grouped = hardcodedApplications.reduce((acc, app) => {
+  // Fetch halls
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/halls_and_rooms/hall/")
+      .then((res) => {
+        const data = Array.isArray(res.data) ? res.data : res.data.results;
+        setHalls(data);
+      })
+      .catch((err) => console.error("Error fetching halls:", err));
+  }, []);
+
+  // Fetch rooms
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/halls_and_rooms/room/")
+      .then((res) => {
+        const data = Array.isArray(res.data) ? res.data : res.data.results;
+        setRooms(data);
+      })
+      .catch((err) => console.error("Error fetching rooms:", err));
+  }, []);
+
+  // Fetch applications
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/student_admission/application/")
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response not ok");
+        return res.json();
+      })
+      .then((data) => {
+        setApplications(data.results || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message || "Error fetching applications");
+        setLoading(false);
+      });
+  }, []);
+
+  // Group applications by department + session
+  const grouped = applications.reduce((acc, app) => {
     const key = `${app.department_name} | ${app.session}`;
     if (!acc[key]) acc[key] = [];
     acc[key].push(app);
     return acc;
   }, {});
 
+  // Sort grouped applications
   Object.keys(grouped).forEach((key) => {
     grouped[key].sort((a, b) => {
       if (sortBy === "cgpa") return b.cgpa - a.cgpa;
-      if (sortBy === "last_semester_gpa")
-        return b.last_semester_gpa - a.last_semester_gpa;
+      if (sortBy === "last_semester_gpa") return b.last_semester_gpa - a.last_semester_gpa;
       if (sortBy === "distance")
-        return (
-          a.home_distance_from_SUST_in_km - b.home_distance_from_SUST_in_km
-        );
-      if (sortBy === "income")
-        return a.family_monthly_income - b.family_monthly_income;
+        return a.home_distance_from_SUST_in_km - b.home_distance_from_SUST_in_km;
+      if (sortBy === "income") return a.family_monthly_income - b.family_monthly_income;
       return 0;
     });
   });
 
+  // Handle allocation: send PATCH request to backend
   const handleAllocate = () => {
-    if (!selectedApplicant || !selectedHall || !selectedRoom) return;
+    if (!selectedApplicant || !selectedHall || !selectedRoom) {
+      alert("Please select applicant, hall, and room.");
+      return;
+    }
 
-    setAllocatedSeats((prev) => ({
-      ...prev,
-      [selectedApplicant.registration_number]: {
-        hall: selectedHall,
-        room: selectedRoom,
-      },
-    }));
+    // IMPORTANT: Use admission ID, not registration number for URL
+    const admissionId = selectedApplicant.admission; // <-- make sure this field exists and holds PK
 
-    setRoomDialogOpen(false);
-    setSelectedApplicant(null);
-    setSelectedHall("");
-    setSelectedRoom("");
+    if (!admissionId) {
+      alert("Admission ID missing. Cannot allocate seat.");
+      console.error("Selected applicant admission ID missing:", selectedApplicant);
+      return;
+    }
+
+    const payload = {
+      hall: parseInt(selectedHall),
+      room_number: selectedRoom,
+    };
+
+    console.log("handleAllocate called");
+    console.log("Sending PATCH to:", `http://127.0.0.1:8000/student_admission/admission/${admissionId}/`);
+    console.log("Payload:", payload);
+
+    axios
+      .patch(`http://127.0.0.1:8000/student_admission/admission/${admissionId}/`, payload)
+      .then((res) => {
+        console.log("Allocation successful:", res.data);
+        setAllocatedSeats((prev) => ({
+          ...prev,
+          [selectedApplicant.registration_number]: {
+            hall: halls.find((h) => h.hall_id === parseInt(selectedHall))?.hall_name || "",
+            room: selectedRoom,
+          },
+        }));
+        setRoomDialogOpen(false);
+        setSelectedApplicant(null);
+        setSelectedHall("");
+        setSelectedRoom("");
+      })
+      .catch((error) => {
+        console.error("Error allocating seat:", error);
+        alert("Failed to allocate seat. See console for details.");
+      });
   };
 
+  if (loading) return <p>Loading applications...</p>;
+  if (error) return <p className="text-red-600">Error: {error}</p>;
+
   return (
-    <div className="w-full">
+    <div className="w-full p-4">
       <h2 className="text-2xl font-semibold mb-4">Hall Applicants</h2>
 
       <div className="mb-4">
         <label className="mr-2 font-medium">Sort by:</label>
         <select
           onChange={(e) => setSortBy(e.target.value)}
-          className="select select-bordered"
+          className="select select-bordered text-blue-700 bg-yellow-100"
           defaultValue=""
         >
-          <option value="">Default</option>
-          <option value="cgpa">CGPA (High → Low)</option>
-          <option value="last_semester_gpa">Last GPA (High → Low)</option>
-          <option value="distance">Home Distance (Low → High)</option>
-          <option value="income">Family Income (Low → High)</option>
+          <option key="default" value="">
+            Default
+          </option>
+          <option key="cgpa" value="cgpa">
+            CGPA (High → Low)
+          </option>
+          <option key="last_gpa" value="last_semester_gpa">
+            Last GPA (High → Low)
+          </option>
+          <option key="distance" value="distance">
+            Home Distance (Low → High)
+          </option>
+          <option key="income" value="income">
+            Family Income (Low → High)
+          </option>
         </select>
       </div>
 
-      {Object.entries(grouped).map(([group, apps]) => (
-        <div key={group} className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">{group}</h3>
+      {Object.entries(grouped).map(([groupKey, apps]) => (
+        <div key={groupKey} className="mb-6">
+          <h3 className="text-xl font-semibold mb-2">{groupKey}</h3>
 
           <div className="overflow-x-auto border rounded-lg">
             <table className="table table-zebra w-full min-w-[1200px]">
@@ -179,9 +203,7 @@ const HallApplicants = () => {
                       {app.special_reason_for_hall_seat &&
                       app.special_reason_for_hall_seat.split(" ").length > 6 ? (
                         <button
-                          onClick={() => {
-                            setSelectedReason(app.special_reason_for_hall_seat);
-                          }}
+                          onClick={() => setSelectedReason(app.special_reason_for_hall_seat)}
                           className="text-blue-600 underline"
                         >
                           {truncateText(app.special_reason_for_hall_seat)}
@@ -191,8 +213,7 @@ const HallApplicants = () => {
                       )}
                     </td>
                     <td>
-                      {app.total_credits_offered} /{" "}
-                      {app.total_credits_completed}
+                      {app.total_credits_offered} / {app.total_credits_completed}
                     </td>
                     <td>{app.cgpa}</td>
                     <td>{app.last_semester_gpa}</td>
@@ -209,12 +230,13 @@ const HallApplicants = () => {
                               className="btn btn-xs btn-outline btn-info"
                               onClick={() => {
                                 setSelectedApplicant(app);
-                                setSelectedHall(
-                                  allocatedSeats[app.registration_number].hall
+                                const hallObj = halls.find(
+                                  (h) =>
+                                    h.hall_name ===
+                                    allocatedSeats[app.registration_number].hall
                                 );
-                                setSelectedRoom(
-                                  allocatedSeats[app.registration_number].room
-                                );
+                                setSelectedHall(hallObj?.hall_id.toString() || "");
+                                setSelectedRoom(allocatedSeats[app.registration_number].room);
                                 setRoomDialogOpen(true);
                               }}
                             >
@@ -256,6 +278,7 @@ const HallApplicants = () => {
         </div>
       ))}
 
+      {/* Reason Modal */}
       {selectedReason && (
         <dialog open className="modal modal-open">
           <div className="modal-box max-w-xl">
@@ -270,12 +293,15 @@ const HallApplicants = () => {
         </dialog>
       )}
 
+      {/* Allocate Room Modal */}
       {roomDialogOpen && selectedApplicant && (
         <dialog open className="modal modal-open">
-          <div className="modal-box max-w-sm">
+          <div className="modal-box max-w-sm bg-white text-black shadow-xl rounded-xl">
             <h3 className="font-bold text-lg mb-4">
               Allocate Seat for {selectedApplicant.name}
             </h3>
+
+            {/* Hall Selection */}
             <div className="mb-2">
               <label className="label">Hall</label>
               <select
@@ -284,33 +310,42 @@ const HallApplicants = () => {
                   setSelectedHall(e.target.value);
                   setSelectedRoom("");
                 }}
-                className="select select-bordered w-full"
+                className="select select-bordered w-full bg-white text-black"
               >
-                <option value="">Select Hall</option>
+                <option key="hall-default" value="">
+                  Select Hall
+                </option>
                 {halls.map((hall) => (
-                  <option key={hall} value={hall}>
-                    {hall}
+                  <option key={`hall-${hall.hall_id}`} value={hall.hall_id.toString()}>
+                    {hall.hall_name}
                   </option>
                 ))}
               </select>
             </div>
+
+            {/* Room Selection */}
             <div className="mb-4">
               <label className="label">Available Rooms</label>
               <select
                 value={selectedRoom}
                 onChange={(e) => setSelectedRoom(e.target.value)}
-                className="select select-bordered w-full"
+                className="select select-bordered w-full bg-white text-black"
                 disabled={!selectedHall}
               >
-                <option value="">Select Room</option>
-                {selectedHall &&
-                  rooms[selectedHall]?.map((room) => (
-                    <option key={room} value={room}>
-                      {room}
+                <option key="room-default" value="">
+                  Select Room
+                </option>
+                {rooms
+                  .filter((room) => room.hall === parseInt(selectedHall))
+                  .map((room) => (
+                    <option key={`room-${room.room_id}`} value={room.room_number}>
+                      {room.room_number}
                     </option>
                   ))}
               </select>
             </div>
+
+            {/* Modal Actions */}
             <div className="modal-action">
               <button
                 className="btn btn-secondary"

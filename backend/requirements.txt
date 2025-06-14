@@ -164,15 +164,15 @@ ALL API List
 
 Complain--
 http://127.0.0.1:8000/complain/make_complaints/
-http://127.0.0.1:8000/complain/systemgoal/
+http://127.0.0.1:8000/complain/system_goal/
 
 dining_canteen_shop--
-http://127.0.0.1:8000/dining_canteen_shop/additem/
-http://127.0.0.1:8000/dining_canteen_shop/feedback/
-http://127.0.0.1:8000/dining_canteen_shop/halloutlet/
+http://127.0.0.1:8000/dining_canteen_shop/items/
+http://127.0.0.1:8000/dining_canteen_shop/feedbacks/
+http://127.0.0.1:8000/dining_canteen_shop/hall-outlets/
 
 events--
-http://127.0.0.1:8000/events/create_event/
+http://127.0.0.1:8000/events/create_events/
 
 forum--
 http://127.0.0.1:8000/forum/new_forum_post/
@@ -182,36 +182,36 @@ http://127.0.0.1:8000/guest_registration/guest/
 
 hall_and_rooms--
 http://127.0.0.1:8000/halls_and_rooms/hall/
-http://127.0.0.1:8000/halls_and_rooms/
+http://127.0.0.1:8000/halls_and_rooms/room/
 
 lost_and_found--    
-http://127.0.0.1:8000/lost_and_found/new_lostandfound/
+http://127.0.0.1:8000/lost_and_found/new_lost_and_found/
+
 
 meetings--
-http://127.0.0.1:8000/meetings/addtopic/
-http://127.0.0.1:8000/meetings/createmeeting/
-
+http://127.0.0.1:8000/meetings/topics/
+http://127.0.0.1:8000/meetings/meetings/
 
 
 notice_board--
-http://127.0.0.1:8000/notice_board/noticeboard/
-
+http://127.0.0.1:8000/notice_board/notices/
 Official--
-http://127.0.0.1:8000/official/officialregistration/
-http://127.0.0.1:8000/official/dining_shop_canteen/
-http://127.0.0.1:8000/official/officialperson/
-http://127.0.0.1:8000/admin/official/provostbody/
+http://127.0.0.1:8000/official/official_registration/
+http://127.0.0.1:8000/official/dining-canteen-shop/
+http://127.0.0.1:8000/official/official-person/
+http://127.0.0.1:8000/official/provost-body/
 
 official_transaction--
-http://127.0.0.1:8000/official_transaction/createofficialtransaction/
+http://127.0.0.1:8000/official_transaction/transactions/
 
 sport_equipment--   
-http://127.0.0.1:8000/sport_equipment/sportsequipment/
+http://127.0.0.1:8000/sport_equipment/sports_equipment/
 
 student_admission--
-http://127.0.0.1:8000/student_admission/admission/
-http://127.0.0.1:8000/student_admission/application/
-http://127.0.0.1:8000/student_admission/
+
+application: http://127.0.0.1:8000/student_admission/application/
+student: http://127.0.0.1:8000/student_admission/student/
+admission: http://127.0.0.1:8000/student_admission/admission/
 
 user_info--
 http://127.0.0.1:8000/user_info/userinformation/

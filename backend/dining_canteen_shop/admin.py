@@ -8,7 +8,7 @@ from student_admission.models import *
 @admin.register(HallOutlet)
 class HallOutletAdmin(admin.ModelAdmin):
     list_display = ('owner', 'owner_name', 'hall', 'is_active', 'get_role')
-    search_fields = ('owner__name', 'owner__official_role', 'owner__hall__name')
+    search_fields = ('owner__name', 'owner__official_role', 'owner__hall__hall_name')
     list_filter = ('is_active',)
 
     readonly_fields = (
@@ -25,7 +25,7 @@ class HallOutletAdmin(admin.ModelAdmin):
     owner_name.short_description = 'Owner Name'
 
     def hall(self, obj):
-        return obj.owner.hall.name if obj.owner.hall else '-'
+        return obj.owner.hall.hall_name
     hall.short_description = 'Hall Name'
 
     def get_role(self, obj):
@@ -36,12 +36,13 @@ class HallOutletAdmin(admin.ModelAdmin):
 @admin.register(AddItem)
 class AddItemAdmin(admin.ModelAdmin):
     list_display = ('item', 'owner_name', 'hall', 'meal_time', 'price')
-    search_fields = ('item', 'owner__name', 'owner__hall__name')
+    search_fields = ('item', 'owner__name', 'owner__hall__hall_name')
     list_filter = ('meal_time',) 
     autocomplete_fields = ('owner',)
 
     def hall(self, obj):
-        return obj.owner.hall.name
+        return obj.owner.hall.hall_name
+
     hall.short_description = 'Hall Name'
 
     def owner_name(self, obj):
@@ -61,7 +62,8 @@ class FeedbackAdmin(admin.ModelAdmin):
     short_review.short_description = 'Review'
 
     def hall(self, obj):
-        return obj.item.owner.hall.name if obj.item.owner.hall else '-'
+        return obj.item.owner.hall.hall_name if obj.item.owner.hall else '-'
+
     hall.short_description = 'Hall Name'
 
     def owner_name(self, obj):

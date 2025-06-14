@@ -6,6 +6,7 @@ from django.shortcuts import render
 from .models import *
 from .serializers import *
 from rest_framework import viewsets, status
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # =====================
@@ -24,6 +25,9 @@ class StudentViewSet(viewsets.ModelViewSet):
 class AdmissionViewSet(viewsets.ModelViewSet):
     queryset = Admission.objects.all()
     serializer_class = AdmissionSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['registration_number']
+    lookup_field = 'applicant__registration_number'  # 👈 Add this
 
 
 # =====================

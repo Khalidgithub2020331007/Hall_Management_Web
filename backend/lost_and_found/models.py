@@ -12,12 +12,13 @@ from student_admission.models import *
 from django.core.validators import RegexValidator
 
 class New_LostAndFound(models.Model):
+    status=models.CharField(max_length=20, choices=LOST_FOUND_CHOICES, default='lost')
     post_id = models.AutoField(primary_key=True)
     post_date_time = models.DateTimeField(auto_now_add=True)
 
     element_name = models.CharField(max_length=255)
     element_description = models.TextField()
-    found_location = models.TextField()
+    found_location = models.TextField(blank=True, null=True)
     contact_number = models.CharField(max_length=15, blank=True, null=True)
     image = models.ImageField(upload_to='lost_and_found/', blank=True, null=True)
     user_email = models.ForeignKey(
@@ -27,7 +28,8 @@ class New_LostAndFound(models.Model):
     )
 
     def __str__(self):
-        return f"{self.element_name} - {self.posted_by.email} ({self.post_date_time.strftime('%Y-%m-%d')})"
+        return f"{self.element_name} - {self.user_email.email} ({self.post_date_time.strftime('%Y-%m-%d')})"
+    
     def clean(self):
         # Strip whitespace and validate element name
         if not self.element_name.strip():
