@@ -31,7 +31,7 @@ const DashboardLayout = () => {
   if (!localStorage.getItem("authToken")) return null;
 
   return (
-    <div className="flex h-screen bg-base-200 overflow-hidden">
+    <div className="flex h-screen bg-base-200 overflow-auto">
       {/* Overlay for mobile when sidebar is open */}
       {isSidebarOpen && (
         <div
@@ -56,7 +56,7 @@ const DashboardLayout = () => {
         } transition-all duration-300`}
       >
         <Topbar toggleSidebar={toggleSidebar} userName={userName} userHallName={userHallName} />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 bg-secondary rounded-tl-xl shadow-inner">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-secondary rounded-tl-xl shadow-inner"> 
           <Outlet />
         </main>
       </div>

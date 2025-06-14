@@ -77,6 +77,7 @@ export const router = createBrowserRouter([
       { path: "manage-notices", element: <ManageNotices /> },
       { path: "manage-students", element: <ManageStudents /> },
       { path: "meetings", element: <Meetings /> },
+      { path: "hall-applicants", element: <HallApplicants /> },
       // dining canteen
       { path: "manage-menu", element: <ManageMenu /> },
       { path: "reviews", element: <Reviews /> },
