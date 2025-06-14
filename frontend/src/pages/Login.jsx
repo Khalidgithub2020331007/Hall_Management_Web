@@ -93,7 +93,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-secondary-50">
       <div className="absolute top-5 right-5">
         <button onClick={goToApply} className="btn btn-primary">
           Apply for Seat

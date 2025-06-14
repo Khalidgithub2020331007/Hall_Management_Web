@@ -56,7 +56,7 @@ const DashboardLayout = () => {
         } transition-all duration-300`}
       >
         <Topbar toggleSidebar={toggleSidebar} userName={userName} userHallName={userHallName} />
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-secondary rounded-tl-xl shadow-inner"> 
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-primary-content text-black rounded-tl-xl shadow-inner"> 
           <Outlet />
         </main>
       </div>
