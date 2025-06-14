@@ -2,14 +2,10 @@
 # backend/settings.py
 # =================================
 
-
-
-
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -20,18 +16,9 @@ SECRET_KEY = 'django-insecure-ocka8lq$qbnrbib5p5xhr*@zyqge#izd4=+uv+#74ex$i59qhj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
-# Optional but helpful:
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
-
-
+ALLOWED_HOSTS = []
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,22 +33,22 @@ INSTALLED_APPS = [
     'events',
     'forum',
     'official_transaction',
+    'notice_board',
     'lost_and_found',
+    'sport_equipment',
     'guest_registration',
     'meetings',
-    'notice_board',       # Already existing app
-    'student_admission',   # Newly added app
-    'halls_and_rooms',     # Newly added app
-    'user_info',           # Newly added app
-    'official',   
-    'sport_equipment',     # Newly added app
+    'student_admission',
+    'halls_and_rooms',
+    'user_info',
+    'official',
 
     # 3rd-party apps
     'corsheaders',
     'rest_framework',
+    # ADD django-storages TO YOUR INSTALLED APPS
+    'storages',
 ]
-
-
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -74,7 +61,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 CORS_ALLOW_ALL_ORIGINS = True
-
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -96,10 +82,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -107,58 +91,61 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    { 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'Asia/Dhaka'  # ← change this from 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 USE_I18N = True
 USE_TZ = True
 
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = 'static/'
-# Media files (Uploaded images, files)
-MEDIA_URL = '/media/'  # URL to access media files
-MEDIA_ROOT = BASE_DIR / 'media'  # Directory where media files are stored
 
+# ==============================================================================
+# MINIO MEDIA STORAGE CONFIGURATION
+# ==============================================================================
+
+# Comment out or remove the old local media settings
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media'
+
+# Use django-storages for file storage
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# MinIO/S3 Settings - Use the keys from your MinIO server
+AWS_ACCESS_KEY_ID = 'Muztahid'
+AWS_SECRET_ACCESS_KEY = 'Muztahid123'
+AWS_STORAGE_BUCKET_NAME = 'hall-management-media'
+AWS_S3_ENDPOINT_URL = 'http://127.0.0.1:9000'
+
+# These settings are required for local development
+AWS_S3_USE_SSL = False
+AWS_QUERYSTRING_AUTH = False
+
+# This sets the public URL for accessing the media files
+MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/'
+
+# ==============================================================================
 
 # REST Framework settings
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Change in production
+        'rest_framework.permissions.AllowAny', # Change in production
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
 
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

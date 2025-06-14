@@ -1,10 +1,16 @@
+# =================================
+# official_transactions/models.py
+# =================================
+
 from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from storages.backends.s3boto3 import S3Boto3Storage # <-- Import S3Boto3Storage
 from halls_and_rooms.models import *
 from user_info.models import *
 from official.models import *
 from student_admission.models import *
+
 class CreateOfficialTransaction(models.Model):
     transaction_id = models.AutoField(primary_key=True)
     transaction_date_time = models.DateTimeField(auto_now_add=True)
@@ -20,6 +26,8 @@ class CreateOfficialTransaction(models.Model):
 
     def add_file(self, file_path: str):
         file_path = file_path.strip()
+        if self.transaction_file is None:
+            self.transaction_file = []
         if file_path not in self.transaction_file:
             self.transaction_file.append(file_path)
             self.save(update_fields=['transaction_file'])
@@ -39,7 +47,13 @@ class AddFile(models.Model):
         return f"File for {self.transaction.transaction_type} - {self.file.name}"
 
     def save(self, *args, **kwargs):
+        # +++ ADDED: MinIO integration logic +++
+        # Explicitly set the storage backend to S3Boto3Storage for this operation.
+        self.file.storage = S3Boto3Storage()
+        # +++ END OF ADDED CODE +++
+
         self.full_clean()
         with transaction.atomic():
             super().save(*args, **kwargs)
             self.transaction.add_file(self.file.name)
+

@@ -5,6 +5,7 @@
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from storages.backends.s3boto3 import S3Boto3Storage # <-- Import S3Boto3Storage
 from choices import BLOCK_CHOICES
 
 # =====================
@@ -46,6 +47,20 @@ class Hall(models.Model):
             raise ValidationError("No vacant seat available in the hall.")
         self.admitted_students += 1
         self.save(update_fields=["admitted_students"])
+
+    # +++ ADDED: Custom save method for MinIO integration +++
+    def save(self, *args, **kwargs):
+        """
+        Overrides the default save method to handle image uploads to MinIO.
+        """
+        # Check if a new image file is being uploaded.
+        if self.image and hasattr(self.image, 'file'):
+            # If so, explicitly set its storage backend to S3Boto3Storage.
+            self.image.storage = S3Boto3Storage()
+        
+        # Call the original save method from the parent class.
+        super().save(*args, **kwargs)
+    # +++ END OF ADDED CODE +++
 
 
 # =====================

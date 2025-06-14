@@ -11,6 +11,8 @@ import string
 import random
 from user_info.models import UserInformation
 from django.core.validators import RegexValidator
+from storages.backends.s3boto3 import S3Boto3Storage # <-- Import S3Boto3Storage
+
 # =====================
 # PHONE NUMBER VALIDATOR
 # =====================
@@ -18,8 +20,6 @@ phone_regex = RegexValidator(
     regex=r'^(\+8801[3-9]\d{8}|01[3-9]\d{8})$',
     message="Phone number must be in the format '+8801XXXXXXXXX' or '01XXXXXXXXX'."
 )
-
-
 
 class ProvostBody(models.Model):
     email = models.EmailField("Official Email", unique=True)
@@ -30,17 +30,13 @@ class ProvostBody(models.Model):
         choices=PROVOST_BODY_ROLE,
         default='provost'
     )
-
     department = models.CharField(max_length=100, default='')
-
     department_role = models.CharField(
         max_length=100,
         choices=DEPARTMENT_ROLE,
         default='professor'
     )
-
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
-
     priority = models.PositiveIntegerField(default=99, editable=False)
 
     def __str__(self):
@@ -55,8 +51,6 @@ class ProvostBody(models.Model):
             'assistant_professor': 5,
             'lecturer': 6,
         }
-
-        # Check provost_body_role first
         if self.provost_body_role in role_order:
             return role_order[self.provost_body_role]
         elif self.department_role in role_order:
@@ -71,9 +65,6 @@ class ProvostBody(models.Model):
     class Meta:
         ordering = ['priority', 'name']
 
-    
-
-
 # =====================
 # Official Person Model
 # =====================
@@ -83,26 +74,20 @@ class OfficialPerson(models.Model):
     official_role = models.CharField(max_length=100,choices=OFFICE_PERSON_ROLE,default='Electrician')
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE,default="")
 
-
     def __str__(self):
         return self.email
-
 
 # =====================
 # Dining/Shop/Canteen Model
 # =====================
 class Dining_Shop_Canteen(models.Model):
-    email = models.EmailField("Official Email",unique=True)  # Usually, email should be unique
+    email = models.EmailField("Official Email",unique=True)
     name=models.CharField(max_length=100)
     official_role = models.CharField(max_length=100,choices=OFFICE_PERSON_ROLE,default='Electrician')
-
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
-
-
 
     def __str__(self):
         return f"{self.name} ({self.email}) - {self.official_role} [Hall ID: {self.hall}]"
-
 
 # =====================
 # Add Office Model
@@ -119,14 +104,12 @@ class OfficialRegistration(models.Model):
     blood_group = models.CharField(max_length=100, choices=BLOOD_GROUP_CHOICES)
     hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
     user_role = models.CharField(max_length=100, choices=USER_ROLE)
-
     provost_body_role = models.CharField(
         max_length=100,
         choices=PROVOST_BODY_ROLE,
         blank=True, null=True,
         help_text='Only for Provost Body'
     )
-
     department = models.CharField(max_length=100, blank=True, null=True)
     department_role = models.CharField(
         max_length=100,
@@ -134,7 +117,6 @@ class OfficialRegistration(models.Model):
         blank=True, null=True,
         help_text='Only for Provost Body'
     )
-
     official_role = models.CharField(
         max_length=100,
         choices=OFFICE_PERSON_ROLE,
@@ -142,8 +124,7 @@ class OfficialRegistration(models.Model):
         blank=True, null=True,
         help_text='Only for Official Person or Dining/Shop/Canteen'
     )
-
-    profile_picture = models.ImageField(upload_to='student_profile_pictures/', null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='officials_profile_picture/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} - {self.email}"
@@ -169,10 +150,16 @@ class OfficialRegistration(models.Model):
         if not self.password:
             self.password = self.generate_random_password()
 
+        # +++ ADDED: MinIO integration logic +++
+        # Check if a new profile picture is being uploaded.
+        if self.profile_picture and hasattr(self.profile_picture, 'file'):
+            # If so, explicitly set the storage backend to S3Boto3Storage.
+            self.profile_picture.storage = S3Boto3Storage()
+        # +++ END OF ADDED CODE +++
+
         super().save(*args, **kwargs)
 
         with transaction.atomic():
-            # Create or update UserInformation
             UserInformation.objects.update_or_create(
                 email=self.email,
                 defaults={
@@ -185,7 +172,7 @@ class OfficialRegistration(models.Model):
                     'user_role': self.user_role,
                 }
             )
-
+            
             if self.user_role == 'provost_body':
                 ProvostBody.objects.update_or_create(
                     email=self.email,
@@ -217,8 +204,6 @@ class OfficialRegistration(models.Model):
                         'hall': self.hall
                     }
                 )
-
-        # ❌ self.delete() was here — removed because it deletes the AddOffice record.
 
     @staticmethod
     def generate_random_password(length=8):

@@ -5,12 +5,13 @@
 import random
 import string
 from halls_and_rooms.models import Hall, Room
-from choices import * 
+from choices import *
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from user_info.models import UserInformation
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
+from storages.backends.s3boto3 import S3Boto3Storage # <-- Import S3Boto3Storage
 
 # =====================
 # PHONE NUMBER VALIDATOR
@@ -33,21 +34,18 @@ registration_number_validator = RegexValidator(
 # =====================
 
 class Application(models.Model):
-
-
     registration_number = models.CharField(
         max_length=10,
         primary_key=True,
         validators=[registration_number_validator],
         help_text='Must be exactly 10 digits (e.g., 20XXXXXXXX)'
     )
-
     name = models.CharField(max_length=100)
     phone_number = models.CharField(
             validators=[phone_regex],
             max_length=14,
             help_text="Enter 11-digit local or 14-digit international format (e.g., 01XXXXXXXXX or +8801XXXXXXXXX)"
-        )    
+        )   
     email = models.EmailField(unique=True)
     blood_group =models.CharField(max_length=100,choices= BLOOD_GROUP_CHOICES)
     father_name = models.CharField(max_length=100)
@@ -74,7 +72,6 @@ class Application(models.Model):
     def clean(self):
         super().clean()
         
-        # Resident months validation
         if self.is_resident:
             if not self.resident_months_in_university_hall or self.resident_months_in_university_hall <= 0:
                 raise ValidationError({
@@ -83,24 +80,29 @@ class Application(models.Model):
         else:
             self.resident_months_in_university_hall = 0
     
-        # Credits validation
         if self.total_credits_offered < self.total_credits_completed:
             raise ValidationError({
                 'total_credits_offered': 'Total credits offered must be greater than total credits completed.',
                 'total_credits_completed': 'Total credits completed must be less than total credits offered.'
             })
     
-        # CGPA validation
         if self.cgpa > 4.0:
             raise ValidationError({'cgpa': 'CGPA cannot exceed 4.0.'})
     
         if self.last_semester_gpa > 4.0:
             raise ValidationError({'last_semester_gpa': 'Last semester GPA cannot exceed 4.0.'})
     
-
     def save(self, *args, **kwargs):
         if not self.is_resident:
             self.resident_months_in_university_hall = 0
+
+        # +++ ADDED: MinIO integration logic +++
+        # Check if a new profile picture is being uploaded.
+        if self.profile_picture and hasattr(self.profile_picture, 'file'):
+            # If so, explicitly set the storage backend to S3Boto3Storage.
+            self.profile_picture.storage = S3Boto3Storage()
+        # +++ END OF ADDED CODE +++
+
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -121,12 +123,9 @@ class Student(models.Model):
     session = models.CharField(max_length=10)
     hall = models.ForeignKey(Hall, on_delete=models.SET_NULL, null=True, blank=True)
 
-
     def __str__(self):
         return f"{self.name} ({self.registration_number})"
     
-
-
 # =====================
 # ADMISSION MODEL
 # =====================
@@ -137,7 +136,7 @@ class Admission(models.Model):
         to_field='registration_number',
         primary_key=True
     )
-    password = models.CharField(max_length=100, editable=False)  # Not editable via forms/admin
+    password = models.CharField(max_length=100, editable=False)
     room_number = models.ForeignKey(Room, on_delete=models.CASCADE)
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
 
@@ -146,15 +145,11 @@ class Admission(models.Model):
             raise ValidationError("Selected room does not belong to the selected hall.")
         if Student.objects.filter(registration_number=self.registration_number.registration_number).exists():
             raise ValidationError("This student is already admitted.")
-        # Fix here:
         if self.registration_number.is_resident and not self.registration_number.attached_hall:
             raise ValidationError({'attached_hall': 'Resident must be attached to a hall.'})
     
-
-
     def save(self, *args, **kwargs):
         self.full_clean()
-                # Auto-generate password if not set
         if not self.password:
             self.password = self.generate_random_password()
         application = self.registration_number
@@ -190,7 +185,6 @@ class Admission(models.Model):
                     'hall':self.hall
                 }
             )
-
             application.delete()
 
     @staticmethod

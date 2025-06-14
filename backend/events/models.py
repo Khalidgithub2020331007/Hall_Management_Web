@@ -1,12 +1,14 @@
 # =================
-# events models.py
+# events/models.py
 # =================
 
 from django.db import models, transaction
+from storages.backends.s3boto3 import S3Boto3Storage
 from halls_and_rooms.models import *
 from user_info.models import *
 from official.models import *
 from student_admission.models import *
+
 class Create_Event(models.Model):
     event_id = models.AutoField(primary_key=True)
     event_name = models.CharField(max_length=255)
@@ -40,6 +42,11 @@ class AddFile(models.Model):
         return f"File for {self.event.event_name} - {self.file.name}"
 
     def save(self, *args, **kwargs):
+        # --- THE FIX ---
+        # Manually assign the correct storage backend just before saving.
+        # This forces Django to use MinIO for this field.
+        self.file.storage = S3Boto3Storage()
+
         self.full_clean()
         with transaction.atomic():
             super().save(*args, **kwargs)
