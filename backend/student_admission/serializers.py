@@ -17,7 +17,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
         fields = [
             'registration_number', 'name', 'phone_number', 'email', 'blood_group',
             'father_name', 'mother_name', 'gender', 'department_name',
-            'study_program', 'session', 'semester', 'premanent_address',
+            'study_program', 'session', 'semester', 'permanent_address',
             'home_distance_from_SUST_in_km', 'family_monthly_income',
             'special_reason_for_hall_seat', 'total_credits_offered', 'total_credits_completed',
             'cgpa', 'last_semester_gpa', 'attached_hall', 'is_resident',

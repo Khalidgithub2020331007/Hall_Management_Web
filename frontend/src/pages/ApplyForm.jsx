@@ -33,11 +33,18 @@ const ApplyForm = () => {
   });
   const [showSuccess, setShowSuccess] = useState(false);
   const [halls, setHalls] = useState([]);
-  useEffect(() => {
+   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/halls/") // replace with your actual endpoint
-      .then((res) => setHalls(res.data))
-      .catch((err) => console.error("Failed to fetch halls:", err));
+      .get("http://127.0.0.1:8000/halls_and_rooms/hall/")
+      .then((res) => {
+        // Defensive: get res.data.results if paginated else res.data
+        const hallsData = Array.isArray(res.data.results) ? res.data.results : res.data;
+        setHalls(hallsData);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch halls:", err);
+        setHalls([]);
+      });
   }, []);
 
   const navigate = useNavigate();
@@ -62,7 +69,7 @@ const ApplyForm = () => {
         console.log(`${pair[0]}: ${pair[1]}`);
       }
       const res = await axios.post(
-        "http://127.0.0.1:8000/registration/application/",
+        "http://127.0.0.1:8000/student_admission/application/",
         data
       );
 
@@ -124,14 +131,23 @@ const ApplyForm = () => {
             onChange={handleChange}
             required
           />
-          <input
+          <select
             name="blood_group"
-            type="text"
-            placeholder="Blood Group"
-            className="input input-bordered w-full text-black bg-white shadow-md"
+            className="select select-bordered w-full text-black bg-white shadow-md"
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Blood Group</option>
+            <option value="A+">A positive (A+)</option>
+            <option value="A-">A negative (A-)</option>
+            <option value="B+">B positive (B+)</option>
+            <option value="B-">B negative (B-)</option>
+            <option value="AB+">AB positive (AB+)</option>
+            <option value="AB-">AB negative (AB-)</option>
+            <option value="O+">O positive (O+)</option>
+            <option value="O-">O negative (O-)</option>
+            <option value="Others">Others</option>
+          </select>
           <input
             name="father_name"
             type="text"
@@ -286,18 +302,21 @@ const ApplyForm = () => {
           />
 
           {/* Hall and Residency */}
+          {/* Hall Selection */}
           <select
             name="attached_hall"
+            className={"select select-bordered w-full " + specialclass1}
             value={formData.attached_hall}
             onChange={handleChange}
-            className="select select-bordered w-full text-black bg-white shadow-md"
+            required
           >
-            <option value="">Select Hall (optional)</option>
-            {halls.map((hall) => (
-              <option key={hall.id} value={hall.id}>
-                {hall.name}
-              </option>
-            ))}
+            <option value="">Attached Hall (optional)</option>
+            {Array.isArray(halls) &&
+              halls.map((hall) => (
+                <option key={hall.hall_id} value={hall.hall_id}>
+                  {hall.hall_name}
+                </option>
+              ))}
           </select>
 
           <label className="label cursor-pointer">
