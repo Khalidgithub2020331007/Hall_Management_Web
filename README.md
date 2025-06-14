@@ -1,7 +1,5 @@
 # 🏫 Hall Management Website
 
-## 📌 Project Stage
-**Requirement Engineering**
 
 ## 🧑‍🎓 Target Users and Stakeholders
 - **Students**
