@@ -1,32 +1,11 @@
 import { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import { format } from "date-fns";
 
 const currentUser = {
-  name: "John Doe",
-  designation: "provost", // Change this to 'dining_manager' to test different roles
+  name: localStorage.getItem("userName"),
+  designation: localStorage.getItem("userRole"),
 };
-
-const dummyMeetings = [
-  {
-    id: 1,
-    title: "Dining Budget Review",
-    description: "Discuss this month's expenses.",
-    date: "2025-06-07T10:00",
-    attendees: ["assistant provost"],
-    outcome: "",
-    host: "John Doe",
-  },
-  {
-    id: 2,
-    title: "Room Allocation Planning",
-    description: "Talk about new batch arrangements.",
-    date: "2025-06-06T15:00",
-    attendees: ["computer operator"],
-    outcome: "Decided to allocate rooms in block C.",
-    host: "Alice",
-  },
-];
 
 const Meetings = () => {
   const [meetings, setMeetings] = useState([]);
@@ -42,9 +21,17 @@ const Meetings = () => {
 
   const fetchMeetings = async () => {
     try {
-      // const res = await axios.get("/api/meetings");
-      // setMeetings(res.data);
-      setMeetings(dummyMeetings); // hardcoded for UI
+      const res = await axios.get("http://127.0.0.1:8000/meetings/meetings/");
+      const data = res.data.results.map((m) => ({
+        id: m.meeting_id,
+        title: m.meeting_topic, 
+        description: m.meeting_description,
+        date: m.meeting_date_time,
+        attendees: m.meeting_members.split(",").map((s) => s.trim()),
+        outcome: m.meeting_decision,
+        host: m.meeting_chairperson, 
+      }));
+      setMeetings(data);
     } catch (err) {
       console.error("Failed to fetch meetings", err);
     }
@@ -52,11 +39,20 @@ const Meetings = () => {
 
   const handleCreateMeeting = async (e) => {
     e.preventDefault();
-    const newMeeting = { ...formData, host: currentUser.name, outcome: "" };
+    const newMeeting = {
+      meeting_description: formData.description,
+      meeting_date_time: formData.date,
+      meeting_members: formData.attendees.join(", "),
+      meeting_decision: "",
+      meeting_topic: [],
+      meeting_minutes: "",
+      next_meeting_date_time: null,
+      meeting_chairperson: currentUser.name,
+    };
 
     try {
-      // await axios.post("/api/meetings", newMeeting);
-      setMeetings([...meetings, { ...newMeeting, id: Date.now() }]);
+      await axios.post("http://127.0.0.1:8000/meetings/meetings/", newMeeting);
+      fetchMeetings();
       setFormData({ title: "", description: "", date: "", attendees: [] });
       setShowForm(false);
     } catch (err) {
@@ -66,7 +62,7 @@ const Meetings = () => {
 
   const handleDelete = async (id) => {
     try {
-      // await axios.delete(`/api/meetings/${id}`);
+      await axios.delete(`http://127.0.0.1:8000/meetings/meetings/${id}/`);
       setMeetings(meetings.filter((m) => m.id !== id));
     } catch (err) {
       console.error("Failed to delete meeting", err);
@@ -75,7 +71,9 @@ const Meetings = () => {
 
   const handleOutcomeUpdate = async (id, newOutcome) => {
     try {
-      // await axios.put(`/api/meetings/${id}/`, { outcome: newOutcome });
+      await axios.patch(`http://127.0.0.1:8000/meetings/meetings/${id}/`, {
+        meeting_decision: newOutcome,
+      });
       setMeetings(
         meetings.map((m) => (m.id === id ? { ...m, outcome: newOutcome } : m))
       );
@@ -98,7 +96,7 @@ const Meetings = () => {
     const eightDaysAgo = new Date();
     eightDaysAgo.setDate(today.getDate() - 8);
 
-    if (currentUser.designation === "dining_manager") {
+    if (currentUser.designation === "dining_shop_canteen") {
       return (
         meetingDate.toDateString() === today.toDateString() ||
         meetingDate.toDateString() === yesterday.toDateString()
@@ -125,12 +123,12 @@ const Meetings = () => {
       {showForm && (
         <form
           onSubmit={handleCreateMeeting}
-          className="card bg-amber-200 p-4 shadow-md space-y-4 mb-6"
+          className="card bg-info p-4 shadow-md space-y-4 mb-6"
         >
           <input
             name="title"
             placeholder="Meeting Title"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white"
             value={formData.title}
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
@@ -140,7 +138,7 @@ const Meetings = () => {
           <textarea
             name="description"
             placeholder="Meeting Description"
-            className="textarea textarea-bordered w-full"
+            className="textarea textarea-bordered w-full bg-white"
             value={formData.description}
             onChange={(e) =>
               setFormData({ ...formData, description: e.target.value })
@@ -150,7 +148,7 @@ const Meetings = () => {
           <input
             type="datetime-local"
             name="date"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white"
             value={formData.date}
             onChange={(e) => setFormData({ ...formData, date: e.target.value })}
             required
@@ -169,26 +167,42 @@ const Meetings = () => {
               tabIndex={0}
               className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full"
             >
-              {["provost", "assistant provost", "computer operator", "all"].map(
-                (role) => (
-                  <li key={role}>
-                    <label className="label cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="checkbox checkbox-sm mr-2"
-                        checked={formData.attendees.includes(role)}
-                        onChange={() => {
-                          const newAttendees = formData.attendees.includes(role)
-                            ? formData.attendees.filter((r) => r !== role)
-                            : [...formData.attendees, role];
-                          setFormData({ ...formData, attendees: newAttendees });
-                        }}
-                      />
-                      <span className="label-text capitalize">{role}</span>
-                    </label>
-                  </li>
-                )
-              )}
+              {[
+                "assistant provost",
+                "computer operator",
+                "Assistant Register",
+                "Administrative Officer",
+                "Accountant",
+                "Cleaner",
+                "Electrician",
+                "Plumber",
+                "Gardener",
+                "Office Assistant",
+                "Office Attendant",
+                "Guard",
+                "Senior Assistant",
+                "Dining",
+                "Shop",
+                "Canteen",
+                "all",
+              ].map((role) => (
+                <li key={role}>
+                  <label className="label cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="checkbox checkbox-sm mr-2"
+                      checked={formData.attendees.includes(role)}
+                      onChange={() => {
+                        const newAttendees = formData.attendees.includes(role)
+                          ? formData.attendees.filter((r) => r !== role)
+                          : [...formData.attendees, role];
+                        setFormData({ ...formData, attendees: newAttendees });
+                      }}
+                    />
+                    <span className="label-text capitalize">{role}</span>
+                  </label>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -221,7 +235,7 @@ const Meetings = () => {
           <div className="grid gap-4 mb-6">
             {upcomingMeetings.map((m) => (
               <div key={m.id} className="card bg-amber-200 shadow p-4">
-                <h4 className="text-lg font-bold">{m.title}</h4>
+                <h4 className="text-lg font-bold">{m.title || "Meeting"}</h4>
                 <p>{m.description}</p>
                 <p className="text-sm text-gray-500">
                   Date: {format(new Date(m.date), "PPpp")}
@@ -252,7 +266,7 @@ const Meetings = () => {
           <div className="grid gap-4">
             {pastMeetings.map((m) => (
               <div key={m.id} className="card bg-amber-200 shadow p-4">
-                <h4 className="text-lg font-bold">{m.title}</h4>
+                <h4 className="text-lg font-bold">{m.title || "Meeting"}</h4>
                 <p>{m.description}</p>
                 <p className="text-sm text-gray-500">
                   Date: {format(new Date(m.date), "PPpp")}
