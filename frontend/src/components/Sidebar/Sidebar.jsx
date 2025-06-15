@@ -38,7 +38,7 @@ const getLinksForRole = (role) => {
         { to: "meetings", icon: FaHandshakeSimple, text: "Meetings" },
         { to: "hall-applicants", icon: FaUsers, text: "Hall Applicants" },
       ];
-    case "official_staff":
+    case "official_person":
       return [
         ...baseLinks,
         {

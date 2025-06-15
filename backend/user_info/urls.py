@@ -12,6 +12,7 @@ router.register('userinformation', UserInformationViewSet, basename='userinforma
 
 urlpatterns = [
     path('', include(router.urls)),  
+    path('login/', UserLoginView.as_view(), name='user-login'),
 ]
 
 # http://127.0.0.1:8000/user_info/userinformation/
