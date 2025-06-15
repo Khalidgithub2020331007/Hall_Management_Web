@@ -147,15 +147,23 @@ const ApplyForm = () => {
             onChange={handleChange}
             required
           />
-          <input
+          <select
             name="blood_group"
-            type="text"
-            placeholder="Blood Group"
-            className={"input input-bordered w-full " + specialclass1}
-            value={formData.blood_group}
+            className="select select-bordered w-full text-black bg-white shadow-md"
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Blood Group</option>
+            <option value="A+">A positive (A+)</option>
+            <option value="A-">A negative (A-)</option>
+            <option value="B+">B positive (B+)</option>
+            <option value="B-">B negative (B-)</option>
+            <option value="AB+">AB positive (AB+)</option>
+            <option value="AB-">AB negative (AB-)</option>
+            <option value="O+">O positive (O+)</option>
+            <option value="O-">O negative (O-)</option>
+            <option value="Others">Others</option>
+          </select>
           <input
             name="father_name"
             type="text"
