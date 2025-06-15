@@ -11,8 +11,7 @@ from choices import *
 # USER INFORMATION MODEL
 # =====================
 class UserInformation(models.Model):
-    id = models.AutoField(primary_key=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(primary_key=True)
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='user_images/', null=True, blank=True)
     phone_number = models.CharField(max_length=15)
@@ -23,4 +22,3 @@ class UserInformation(models.Model):
 
     def __str__(self):
         return f"{self.email} ({self.user_role})"
-
