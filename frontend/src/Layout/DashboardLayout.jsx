@@ -9,14 +9,14 @@ const DashboardLayout = () => {
 
   const userRole = localStorage.getItem("userRole");
   const userName = localStorage.getItem("userName");
-  const userHallName = localStorage.getItem("hallName");
+  const userHallName = localStorage.getItem("hallId");
   
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      navigate("/");
-    }
+    // const token = localStorage.getItem("authToken");
+    // if (!token) {
+    //   navigate("/");
+    // }
     const handleResize = () => {
       setIsSidebarOpen(window.innerWidth >= 768);
     };
@@ -28,7 +28,7 @@ const DashboardLayout = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  if (!localStorage.getItem("authToken")) return null;
+  // if (!localStorage.getItem("authToken")) return null;
 
   return (
     <div className="flex h-screen bg-base-200 overflow-auto">
