@@ -25,14 +25,7 @@ import SidebarItem from "./SidebarItem";
 const getLinksForRole = (role) => {
   const baseLinks = [{ to: "", icon: FaTachometerAlt, text: "Dashboard Home" }];
   switch (role) {
-    case "admin":
-      return [
-        ...baseLinks,
-        { to: "manage-users", icon: FaUserCog, text: "Manage Users" },
-        { to: "manage-halls", icon: FaBuilding, text: "Manage Halls" },
-        { to: "manage-services", icon: FaStore, text: "Manage Services" },
-      ];
-    case "official_staff":
+    case "provost_body":
       return [
         ...baseLinks,
         {
@@ -45,6 +38,18 @@ const getLinksForRole = (role) => {
         { to: "meetings", icon: FaHandshakeSimple, text: "Meetings" },
         { to: "hall-applicants", icon: FaUsers, text: "Hall Applicants" },
       ];
+    case "official_staff":
+      return [
+        ...baseLinks,
+        {
+          to: "manage-students",
+          icon: FaUserGraduate,
+          text: "Manage Students",
+        },
+        { to: "manage-notices", icon: FaClipboardList, text: "Manage Notices" },
+        { to: "manage-complaints", icon: GiBookPile, text: "Manage Complaints" },
+        { to: "meetings", icon: FaHandshakeSimple, text: "Meetings" },
+      ];
     case "student":
       return [
         ...baseLinks,
@@ -55,7 +60,7 @@ const getLinksForRole = (role) => {
         // { to: "my-profile", icon: FaUsers, text: "My Profile" },
         // { to: "meal-order", icon: FaUtensils, text: "Meal Order" },
       ];
-    case "service_provider":
+    case "dining_shop_canteen":
       return [
         ...baseLinks,
         { to: "manage-menu", icon: FaUtensils, text: "Manage Menu/Items" },

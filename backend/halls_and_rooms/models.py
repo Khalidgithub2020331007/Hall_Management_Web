@@ -2,20 +2,16 @@
 # Halls and Rooms MODEL
 # =============================
 
-
 from django.core.exceptions import ValidationError
 from django.db import models
-from storages.backends.s3boto3 import S3Boto3Storage # <-- Import S3Boto3Storage
 from choices import BLOCK_CHOICES
 
 # =====================
 # HALL MODEL
 # =====================
-from django.core.exceptions import ValidationError
-
 class Hall(models.Model):
     hall_id = models.AutoField(primary_key=True)
-    hall_name = models.CharField(max_length=100,unique=True, help_text="Unique name for the hall")
+    hall_name = models.CharField(max_length=100, unique=True, help_text="Unique name for the hall")
     total_room = models.PositiveIntegerField()
     total_number_of_seat = models.PositiveIntegerField()
     admitted_students = models.PositiveIntegerField(default=0)
@@ -36,7 +32,6 @@ class Hall(models.Model):
         
         # Check for duplicate hall_name (case-insensitive)
         qs = Hall.objects.filter(hall_name__iexact=self.hall_name)
-        # If updating existing record, exclude itself from check
         if self.pk:
             qs = qs.exclude(pk=self.pk)
         if qs.exists():
@@ -47,20 +42,6 @@ class Hall(models.Model):
             raise ValidationError("No vacant seat available in the hall.")
         self.admitted_students += 1
         self.save(update_fields=["admitted_students"])
-
-    # +++ ADDED: Custom save method for MinIO integration +++
-    def save(self, *args, **kwargs):
-        """
-        Overrides the default save method to handle image uploads to MinIO.
-        """
-        # Check if a new image file is being uploaded.
-        if self.image and hasattr(self.image, 'file'):
-            # If so, explicitly set its storage backend to S3Boto3Storage.
-            self.image.storage = S3Boto3Storage()
-        
-        # Call the original save method from the parent class.
-        super().save(*args, **kwargs)
-    # +++ END OF ADDED CODE +++
 
 
 # =====================
@@ -74,7 +55,6 @@ class Room(models.Model):
     capacity = models.PositiveIntegerField()
     admitted_students = models.PositiveIntegerField(default=0)
     student_list = models.JSONField(default=list, blank=True)
-
 
     def __str__(self):
         return f"Room {self.room_number} ({self.hall.hall_name})"
@@ -105,5 +85,4 @@ class Room(models.Model):
         if self.room_number not in self.hall.room_list:
             self.hall.room_list.append(self.room_number)
             self.hall.save(update_fields=["room_list"])
-
         super().save(*args, **kwargs)
